@@ -1,0 +1,9 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/VKBusReservation/bin/Debug/net6.0
+/VKBusReservation/obj
+/.vs/VKBusReservation/FileContentIndex/merges
+/.vs/VKBusReservation/FileContentIndex
+/VKBusReservation/Properties

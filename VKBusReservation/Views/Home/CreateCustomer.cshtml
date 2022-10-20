@@ -1,0 +1,80 @@
+﻿@using VKBusReservation.Models
+@model Customer
+@{
+    ViewData["Title"] = "Add Customers";
+    ViewData["Title2"] = "Edit Customer";
+    Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+}
+@if (Model.CustomerId <= 0)
+{
+    <center> <h2 class="text-danger">@ViewData["Title"]</h2></center>
+}
+else
+{
+    <center> <h2 class="text-danger ">@ViewData["Title2"]</h2></center>
+}
+<style>
+    .required:after {
+        content: " *";
+        color: red;
+    }
+</style>
+@using (Html.BeginForm(FormMethod.Post, new { id = "CustomerForm" }))
+{
+    <div class="container border rounded-3  pt-3  bg-light text-dark w-50">
+        @Html.HiddenFor(m => m.CustomerId )
+        <div class="mb-3  row justify-content-center">
+            <div class="col-3">
+                <label class="form-label required"> Name</label>
+            </div>
+            <div class="col-4">
+                @Html.TextBoxFor(m => m.CustomerName , new {@class="form-control", required = "required" , maxlength = "20"} )
+            </div>
+        </div>
+
+        <div class="mb-3 row justify-content-center">
+            <div class="col-3">
+                <label class="form-label required">Email Id</label>
+            </div>
+            <div class="col-4">
+                @Html.TextBoxFor(m => m.EmailId , new {@class="form-control", required = "required" , type= "email"})
+            </div>
+        </div>
+        <div class="mb-3 row justify-content-center">
+            <div class="col-3">
+                <label class="form-label required">Phone Number</label>
+            </div>
+            <div class="col-4">
+                @Html.TextBoxFor(m => m.PhoneNumber , new {@class="form-control", required = "required" ,type ="number",minlength = "10" ,maxlength = "10" ,min="6000000000",max="9999999999"})
+            </div>
+        </div>
+        <div class="mb-3 row justify-content-center">
+            <div class="col-3">
+                <label class="form-label required">Pincode</label>
+            </div>
+            <div class="col-4">
+                @Html.TextBoxFor(m => m.Pincode , new {@class="form-control",  type ="number" ,min= "100000" ,max = "999999"})
+            </div>
+        </div>
+        <div class="mb-3 row justify-content-center">
+            <div class="col-3">
+                <label class="form-label required">City</label>
+            </div>
+            <div class="col-4">
+                @Html.TextBoxFor(m => m.City , new {@class="form-control", required = "required" , maxlength = "20"})
+            </div>
+        </div>
+        <div class="mb-3 row justify-content-center">
+            <div class="col-3">
+                <button type="submit" class="btn btn-outline-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+
+}
+
+
+
+
+
+

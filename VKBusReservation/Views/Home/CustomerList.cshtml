@@ -1,0 +1,56 @@
+﻿@using VKBusReservation.Models
+@model List<Customer>
+@{
+    ViewData["Title"] = "All Customers";
+    Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+}
+    <h2>@ViewData["Title"]</h2>
+
+
+    <table class="table borderd" id="dataTable">
+        <thead style="background-color:aqua;">
+        <tr>          
+            <th class="text-center">Customer Id</th>      
+            <th class="text-center">Customer Name</th>
+            <th class="text-center">Phone Number </th>
+            <th class="text-center">Email Id</th>
+            <th class="text-center">Pincode</th>
+            <th class="text-center">City</th>
+            <th class="text-center">Actions</th>
+        </tr>
+    </thead>
+     <tbody>
+        @foreach (Customer customer in Model)
+        {
+            <tr>
+                <td class="text-center">@customer.CustomerId</td>
+                <td class="text-center">@customer.CustomerName</td>
+                <td class="text-center">@customer.PhoneNumber</td>
+                <td class="text-center">@customer.EmailId</td>
+                <td class="text-center">@customer.Pincode</td>
+                <td class="text-center">@customer.City</td>
+                <td class="text-center">
+                    <button class="btn btn-danger"  onclick="ConfirmDelete(@customer.CustomerId)">Delete</button>
+                    <a href="/Home/Edit/@customer.CustomerId" class="btn btn-primary">Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+            <tfoot>
+                <tr>
+                    <td></td>
+                </tr>
+            </tfoot>
+    
+    </table>
+
+
+ @section scripts{
+   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.12.1/datatables.min.css" />
+   <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.12.1/datatables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#dataTable").DataTable();
+        })
+    </script>
+}

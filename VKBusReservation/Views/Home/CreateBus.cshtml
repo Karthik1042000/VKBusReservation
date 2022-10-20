@@ -1,0 +1,96 @@
+﻿@using VKBusReservation.Models
+@model Bus
+@{
+    ViewData["Title"] = "Create Bus";
+    ViewData["Title2"] = "Edit Bus";
+    Layout = "~/Views/Shared/_LayoutBus.cshtml";
+}
+@if (Model.BusId <= 0)
+{
+    <center> <h2 class="text-danger">@ViewData["Title"]</h2></center>
+}
+else
+{
+    <center> <h2 class="text-danger ">@ViewData["Title2"]</h2></center>
+}
+<style>
+    .required:after {
+        content: " *";
+        color: red;
+    }
+</style>
+@using (Html.BeginForm(FormMethod.Post, new { id = "Busform" }))
+{
+    <div class="container border rounded-3  pt-3  bg-light text-dark w-50">
+        @Html.HiddenFor(m => m.BusId )
+        <div class="mb-3  row justify-content-center">
+            <div class="col-3">
+                <label class="form-label required">Bus Name</label>
+            </div>
+            <div class="col-4">
+                @Html.TextBoxFor(m => m.BusName , new {@class="form-control", required = "required" , maxlength = "20"} )
+            </div>
+        </div>
+        <div class="mb-3  row justify-content-center">
+            <div class="col-3">
+                <label class="form-label required">Bus Number</label>
+            </div>
+            <div class="col-4">
+                @Html.TextBoxFor(m => m.BusNumber , new {@class="form-control", required = "required" , minlength = "6",maxlength = "10"})
+            </div>
+        </div>
+        <div class="mb-3  row justify-content-center">
+            <div class="col-3">
+                <label class="form-label required">Total Seats</label>
+            </div>
+            <div class="col-4">
+                @Html.TextBoxFor(m => m.TotalSeats , new {@class="form-control", required = "required" ,type ="number",min = "1" ,max = "55"})
+            </div>
+        </div>
+        <div class="mb-3  row justify-content-center">
+            <div class="col-3">
+                <label class="form-label required">Trip Start Time</label>
+            </div>
+            <div class="col-4">
+                @Html.TextBoxFor(m => m.TripStartTime , new {@class="form-control", required = "required",type ="time"} )
+            </div>
+        </div>
+        <div class="mb-3  row justify-content-center">
+            <div class="col-3">
+                <label class="form-label required">Trip End Time</label>
+            </div>
+            <div class="col-4">
+                @Html.TextBoxFor(m => m.TripEndTime , new {@class="form-control", required = "required",type ="time"} )
+            </div>
+        </div>
+        <div class="mb-3  row justify-content-center">
+            <div class="col-3">
+                <label class="form-label required">Ticket Price</label>
+            </div>
+            <div class="col-4">
+                @Html.TextBoxFor(m => m.TicketPrice , new {@class="form-control", required = "required",type ="number",min="100",max="50000"} )
+            </div>
+        </div>
+        <div class="mb-3  row justify-content-center">
+            <div class="col-3">
+                <label class="form-label required">From</label>
+            </div>
+            <div class="col-4">
+                @Html.TextBoxFor(m => m.From , new {@class="form-control", required = "required" , maxlength = "30"})
+            </div>
+        </div>
+        <div class="mb-3  row justify-content-center">
+            <div class="col-3">
+                <label class="form-label required">To</label>
+            </div>
+            <div class="col-4">
+                @Html.TextBoxFor(m => m.To , new {@class="form-control", required = "required" , maxlength = "30"})
+            </div>
+        </div>
+        <div class="mb-3 row justify-content-center">
+            <div class="col-3">
+                <button type="submit" class="btn btn-outline-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+}

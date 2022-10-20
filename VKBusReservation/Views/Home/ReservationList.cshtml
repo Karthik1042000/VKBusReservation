@@ -1,0 +1,58 @@
+﻿@using VKBusReservation.Models.DTO
+@model List<AddReservationDTO>
+@{
+    ViewData["Title"] = "Reservation List";
+    Layout = "~/Views/Shared/_LayoutReservation.cshtml";
+}
+    <h2>@ViewData["Title"]</h2>
+<table class="table borderd" id="dataTable">
+    <thead style="background-color:aqua;">
+
+        <tr>
+            <th  class="text-center">Reservation Id</th>
+            <th class="text-center">Customer Name</th>
+            <th class="text-center">Bus Number</th>
+            <th class="text-center">Number Of BookingSeats</th>
+            <th class="text-center">Ticket Price </th>
+            <th class="text-center">Pickup Point</th>
+            <th class="text-center">Drop Point</th>
+            <th class="text-center">Reservation Time</th>
+            <th class="text-center">Reservation Date</th>
+            <th class="text-center">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (AddReservationDTO reservation in Model)
+        {
+            <tr>
+                <td class="text-center">@reservation.ReservationId</td>
+                <td class="text-center"> <a href="#" class="stretched-link">@reservation.CustomerName</a></td>
+                <td class="text-center">@reservation.BusNumber</td>
+                <td class="text-center">@reservation.NumberOfSeats</td>
+                <td class="text-center">@reservation.TicketPrice</td>
+                <td class="text-center">@reservation.PickupPoint</td>
+                <td class="text-center">@reservation.DropPoint</td>
+                <td class="text-center">@reservation.ReservationTime</td>
+                <td class="text-center">@reservation.Reservationdate</td>
+                <td class="text-center">
+                    <button class="btn btn-danger"  onclick="ConfirmDelete(@reservation.ReservationId)">Delete</button>
+                    <a href="/Home/EditReservation/@reservation.ReservationId" class="btn btn-primary">Edit Reservation</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td></td>
+        </tr>
+    </tfoot>
+    </table>
+@section scripts{
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.12.1/datatables.min.css" />
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.12.1/datatables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#dataTable").DataTable();
+        })
+    </script>
+}
