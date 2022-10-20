@@ -29,44 +29,6 @@ namespace BusReservationManagement.Controllers
         {
             return View();
         }
-        //public IActionResult Login()
-        //{
-        //    return View();
-        //}
-        //public IActionResult LoginDTO(LoginDTO login)
-        //{
-        //    var log=customerRepository.GetById(login.CustomerId);
-        //    if(log == null)
-        //    {
-        //        return Json("Customer Id is Invalid");
-        //    }
-        //    if(log.PhoneNumber == login.PhoneNumber)
-        //    {
-        //        return RedirectToAction("Reserve", "Home",new { id = log.CustomerId });
-        //    }
-        //    else
-        //    {
-        //        return Json("Phone number is wrong");
-        //    }
-          
-        //}
-        //public IActionResult Reserve(int id)
-        //{
-        //    AddReservationDTO reservation = new AddReservationDTO();
-        //    reservation.CustomerId = id;
-        //    reservation.BusList = busRepository.GetAll().Select(a => new SelectListItem
-        //    {
-        //        Text = a.BusName + "(" + a.BusNumber + ")",
-        //        Value = a.BusId.ToString()
-        //    }).ToList();
-
-        //    return View(reservation);
-        //}
-        //    [HttpPost]
-        //    public IActionResult Get(Reservation reservation)
-        //    {
-        //    return Json(reservationRepository.BookTicket(reservation));
-        //    }
         
 
         public IActionResult CustomerList()
