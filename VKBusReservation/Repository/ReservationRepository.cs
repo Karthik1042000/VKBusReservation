@@ -222,11 +222,15 @@ namespace VKBusReservation.Repository
                                   where reservation.CustomerId == customerId
                                   select new CustomerDetails()
                                   {
+                                      ReservationId=reservation.ReservationId,
+                                      CustomerName = customer.CustomerName,
                                       BusName = bus.BusName,
                                       BusNumber = bus.BusNumber,
                                       Reservationdate = reservation.Reservationdate,
-                                      CustomerName = customer.CustomerName,
+                                      From=bus.From,
+                                      To=bus.To,
                                       ReservedSeats = reservation.NumberOfSeats,
+                                      TicketPrice=bus.TicketPrice * reservation.NumberOfSeats,
 
                                   }).ToList();
 
@@ -247,8 +251,9 @@ namespace VKBusReservation.Repository
                                       CustomerName = customer.CustomerName,
                                       BusNumber=bus.BusNumber,
                                       NumberOfSeats = reservation.NumberOfSeats,
-                                      
-                                      ReservationTime = reservation.ReservationTime,
+                                      TicketPrice=bus.TicketPrice * reservation.NumberOfSeats,
+                                      From=bus.From,
+                                      To=bus.To,
                                       Reservationdate=reservation.Reservationdate,  
 
 

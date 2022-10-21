@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using VKBusReservation.Models.DTO;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Linq;
 
 namespace BusReservationManagement.Controllers
 {
@@ -29,7 +30,7 @@ namespace BusReservationManagement.Controllers
         {
             return View();
         }
-        
+
 
         public IActionResult CustomerList()
         {
@@ -116,12 +117,18 @@ namespace BusReservationManagement.Controllers
             var reservations = reservationRepository.ReserveList();
             return View(reservations);
         }
+
+        public IActionResult CustomerDetails(int id)
+        {
+            var details = reservationRepository.ReservationDetailsByCustomerId(id);
+            return View(details);
+        }
         public IActionResult BookTicket()
         {
             AddReservationDTO reservation = new AddReservationDTO();
-            reservation.BusList=busRepository.GetAll().Select(a => new SelectListItem
+            reservation.BusList = busRepository.GetAll().Select(a => new SelectListItem
             {
-                Text = a.BusName +"(" +a.BusNumber+")",
+                Text = a.BusName + "(" + a.BusNumber + ")",
                 Value = a.BusId.ToString()
             }).ToList();
             reservation.CustomerList = customerRepository.GetAll().Select(a => new SelectListItem
@@ -129,26 +136,34 @@ namespace BusReservationManagement.Controllers
                 Text = a.CustomerName + "(" + a.CustomerId + ")",
                 Value = a.CustomerId.ToString()
             }).ToList();
+            reservation.CustomerList.Insert(0, new SelectListItem { Text = "Select Customer", Value = "" });
 
-            reservation.FromList =busRepository.GetAll().Select(a => new SelectListItem
+            reservation.FromList = busRepository.GetAll().DistinctBy(x => x.From).Select(a => new SelectListItem
             {
                 Text = a.From,
                 Value = a.From.ToString()
             }).ToList();
-            reservation.ToList = busRepository.GetAll().Select(a => new SelectListItem
+            reservation.FromList.Insert(0, new SelectListItem { Text = "Select From", Value = "" });
+
+            reservation.ToList = busRepository.GetAll().DistinctBy(x => x.To).Select(a => new SelectListItem
             {
                 Text = a.To,
                 Value = a.To.ToString()
             }).ToList();
+            reservation.ToList.Insert(0, new SelectListItem { Text = "Select Destination", Value = "" });
             return View(reservation);
         }
-        [HttpPost]
-        public ActionResult GetBus( string from,string to)
+        public ActionResult GetBus(string from, string to)
         {
-            var bus = busRepository.GetByFromTo(from,to);
+            var bus = busRepository.GetByFromTo(from, to);
             return Json(bus);
         }
 
+        public ActionResult GetReservation(int id)
+        {
+            var bus = reservationRepository.GetAll().LastOrDefault(x => x.BusId == id);
+            return Json(bus);
+        }
         [HttpPost]
         public ActionResult SaveTicket(Reservation reservation)
         {

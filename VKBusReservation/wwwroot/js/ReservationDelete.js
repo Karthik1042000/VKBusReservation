@@ -19,3 +19,24 @@
         });
     }
 }
+
+function CustomerDetails(id) {
+    if (result) {
+        $.ajax({
+            type: "get",
+            url: "/Home/CustomerDetails?id=" + id,
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function (response) {
+                alert(response.message);
+                if (response.success == true) {
+                    alert("hi");
+                    setTimeout(function () { window.location = '/Home/ReservationList'; }, 500);
+                }
+            },
+            error: function () {
+                alert("error");
+            }
+        });
+    }
+}

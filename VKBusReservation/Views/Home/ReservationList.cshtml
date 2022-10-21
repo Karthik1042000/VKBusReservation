@@ -12,11 +12,10 @@
             <th  class="text-center">Reservation Id</th>
             <th class="text-center">Customer Name</th>
             <th class="text-center">Bus Number</th>
-            <th class="text-center">Number Of BookingSeats</th>
+            <th class="text-center">Reserved Seat</th>
             <th class="text-center">Ticket Price </th>
-            <th class="text-center">Pickup Point</th>
-            <th class="text-center">Drop Point</th>
-            <th class="text-center">Reservation Time</th>
+            <th class="text-center">From</th>
+            <th class="text-center">To</th>
             <th class="text-center">Reservation Date</th>
             <th class="text-center">Actions</th>
         </tr>
@@ -26,14 +25,14 @@
         {
             <tr>
                 <td class="text-center">@reservation.ReservationId</td>
-                <td class="text-center"> <a href="#" class="stretched-link">@reservation.CustomerName</a></td>
+                <td class="text-center"><button type="button" class="btn btn-link"
+                onClick="CustomerDetails(@reservation.CustomerId)">@reservation.CustomerName</button></td>
                 <td class="text-center">@reservation.BusNumber</td>
                 <td class="text-center">@reservation.NumberOfSeats</td>
                 <td class="text-center">@reservation.TicketPrice</td>
                 <td class="text-center">@reservation.From</td>
                 <td class="text-center">@reservation.To</td>
-                <td class="text-center">@reservation.ReservationTime</td>
-                <td class="text-center">@reservation.Reservationdate</td>
+                <td class="text-center">@String.Format("{0:MM/dd/yyyy}", @reservation.Reservationdate)  </td>
                 <td class="text-center">
                     <button class="btn btn-danger"  onclick="ConfirmDelete(@reservation.ReservationId)">Delete</button>
                     <a href="/Home/EditReservation/@reservation.ReservationId" class="btn" style="background-color:#96E4EF;">Edit</a>
@@ -56,3 +55,6 @@
         })
     </script>
 }
+
+
+
