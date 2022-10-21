@@ -1,16 +1,15 @@
-﻿@using System.Runtime.Serialization
+﻿@using VKBusReservation.Models
+@using System.Runtime.Serialization
 @using System.Globalization
-@using VKBusReservation.Models
 @model List<Bus>
 @{
     ViewData["Title"] = "Buses List";
     Layout = "~/Views/Shared/_LayoutBus.cshtml";
 }
-    <h2>@ViewData["Title"]</h2>
+<h2>@ViewData["Title"]</h2>
 <table class="table borderd table-striped" id="dataTable">
     <thead style="background-color:#ddd;">
         <tr>
-            <th class="text-center">BusId</th>
             <th class="text-center">Bus Name</th>
             <th class="text-center">Bus Number </th>
             <th class="text-center">Total Seats</th>
@@ -19,14 +18,13 @@
             <th class="text-center">Ticket Price</th>
             <th class="text-center">From</th>
             <th class="text-center">To</th>
-            <th class="text-center">Actions</th>
+            <th class="text-center">Action</th>
         </tr>
-        </thead>
-        <tbody>
+    </thead>
+    <tbody>
         @foreach (Bus bus in Model)
         {
             <tr>
-                <td class="text-center">@bus.BusId</td>
                 <td class="text-center">@bus.BusName</td>
                 <td class="text-center">@bus.BusNumber</td>
                 <td class="text-center">@bus.TotalSeats</td>
@@ -36,8 +34,7 @@
                 <td class="text-center">@bus.From</td>
                 <td class="text-center">@bus.To</td>
                 <td class="text-center">
-                    <button class="btn btn-danger" onclick="ConfirmDelete(@bus.BusId)">Delete</button>
-                    <a href="/Home/EditBus/@bus.BusId" class="btn" style="background-color:#96E4EF;">Edit</a>
+                    <a href="/Home/EditBus/@bus.BusId" class="btn" style="background-color:#96E4EF;">Select</a>
                 </td>
             </tr>
         }
@@ -47,13 +44,4 @@
             <td></td>
         </tr>
     </tfoot>
-    </table>
-@section scripts{
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.12.1/datatables.min.css" />
-    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.12.1/datatables.min.js" ></script>
-    <script>
-        $(document).ready(function () {
-            $("#dataTable").DataTable(); 
-        })
-    </script>
-}
+</table>

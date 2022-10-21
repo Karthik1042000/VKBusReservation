@@ -7,8 +7,8 @@
     <h2>@ViewData["Title"]</h2>
 
 
-    <table class="table borderd" id="dataTable">
-        <thead style="background-color:aqua;">
+<table class="table borderd table-striped" id="dataTable">
+    <thead style="background-color:#ddd;">
         <tr>          
             <th class="text-center">Customer Id</th>      
             <th class="text-center">Customer Name</th>
@@ -31,7 +31,7 @@
                 <td class="text-center">@customer.City</td>
                 <td class="text-center">
                     <button class="btn btn-danger"  onclick="ConfirmDelete(@customer.CustomerId)">Delete</button>
-                    <a href="/Home/Edit/@customer.CustomerId" class="btn btn-primary">Edit</a>
+                    <a href="/Home/Edit/@customer.CustomerId" class="btn" style="background-color:#96E4EF;">Edit</a>
                 </td>
             </tr>
         }

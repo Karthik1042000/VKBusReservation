@@ -22,9 +22,6 @@ namespace VKBusReservation.Repository
             var busExist = GetByBusNumber(bus.BusNumber);
             if (busExist == null)
             {
-                TimeSpan time = new TimeSpan(0, busExist.TripStartTime.Hour, busExist.TripStartTime.Minute, busExist.TripStartTime.Second);
-
-                //bus.TripStartTime = time;
                 db.Buses.Add(bus);
                 db.SaveChanges();
                 messages.Success = true;

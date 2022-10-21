@@ -5,8 +5,8 @@
     Layout = "~/Views/Shared/_LayoutReservation.cshtml";
 }
     <h2>@ViewData["Title"]</h2>
-<table class="table borderd" id="dataTable">
-    <thead style="background-color:aqua;">
+<table class="table borderd table-striped" id="dataTable">
+    <thead style="background-color:#ddd;">
 
         <tr>
             <th  class="text-center">Reservation Id</th>
@@ -30,13 +30,13 @@
                 <td class="text-center">@reservation.BusNumber</td>
                 <td class="text-center">@reservation.NumberOfSeats</td>
                 <td class="text-center">@reservation.TicketPrice</td>
-                <td class="text-center">@reservation.PickupPoint</td>
-                <td class="text-center">@reservation.DropPoint</td>
+                <td class="text-center">@reservation.From</td>
+                <td class="text-center">@reservation.To</td>
                 <td class="text-center">@reservation.ReservationTime</td>
                 <td class="text-center">@reservation.Reservationdate</td>
                 <td class="text-center">
                     <button class="btn btn-danger"  onclick="ConfirmDelete(@reservation.ReservationId)">Delete</button>
-                    <a href="/Home/EditReservation/@reservation.ReservationId" class="btn btn-primary">Edit Reservation</a>
+                    <a href="/Home/EditReservation/@reservation.ReservationId" class="btn" style="background-color:#96E4EF;">Edit</a>
                 </td>
             </tr>
         }

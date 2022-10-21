@@ -129,7 +129,24 @@ namespace BusReservationManagement.Controllers
                 Text = a.CustomerName + "(" + a.CustomerId + ")",
                 Value = a.CustomerId.ToString()
             }).ToList();
+
+            reservation.FromList =busRepository.GetAll().Select(a => new SelectListItem
+            {
+                Text = a.From,
+                Value = a.From.ToString()
+            }).ToList();
+            reservation.ToList = busRepository.GetAll().Select(a => new SelectListItem
+            {
+                Text = a.To,
+                Value = a.To.ToString()
+            }).ToList();
             return View(reservation);
+        }
+        [HttpPost]
+        public ActionResult GetBus( string from,string to)
+        {
+            var bus = busRepository.GetByFromTo(from,to);
+            return Json(bus);
         }
 
         [HttpPost]

@@ -52,7 +52,7 @@ else
                 <label class="form-label required">Trip Start Time</label>
             </div>
             <div class="col-4">
-                @Html.TextBoxFor(m => m.TripStartTime , new {@class="form-control", required = "required",type ="time"} )
+                @Html.TextBoxFor(m => m.TripStartTime , new {@class="form-control", required = "required",type ="datetime-local"} )
             </div>
         </div>
         <div class="mb-3  row justify-content-center">
@@ -60,7 +60,7 @@ else
                 <label class="form-label required">Trip End Time</label>
             </div>
             <div class="col-4">
-                @Html.TextBoxFor(m => m.TripEndTime , new {@class="form-control", required = "required",type ="time"} )
+                @Html.TextBoxFor(m => m.TripEndTime , new {@class="form-control", required = "required",type ="datetime-local"} )
             </div>
         </div>
         <div class="mb-3  row justify-content-center">
