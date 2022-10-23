@@ -20,23 +20,13 @@
     }
 }
 
-function CustomerDetails(id) {
+
+
+function details(id) {
+    let result = confirm("Are you sure you want to See the Customer Details?");
     if (result) {
-        $.ajax({
-            type: "get",
-            url: "/Home/CustomerDetails?id=" + id,
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            success: function (response) {
-                alert(response.message);
-                if (response.success == true) {
-                    alert("hi");
-                    setTimeout(function () { window.location = '/Home/ReservationList'; }, 500);
-                }
-            },
-            error: function () {
-                alert("error");
-            }
-        });
+        setTimeout(function () { window.location = '/Home/CustomerDetails?id=' + id; }, 1000);
+    } else {
+        setTimeout(function () { window.location = '/Home/ReservationList'; }, 500);
     }
 }

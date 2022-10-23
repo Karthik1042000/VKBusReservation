@@ -25,8 +25,13 @@
         {
             <tr>
                 <td class="text-center">@reservation.ReservationId</td>
-                <td class="text-center"><button type="button" class="btn btn-link"
-                onClick="CustomerDetails(@reservation.CustomerId)">@reservation.CustomerName</button></td>
+                <td class="text-center">
+                    <button type="button" class="btn btn-link"
+                        onClick="details(@reservation.CustomerId)">
+                        @reservation.CustomerName
+                    </button>
+                   
+            </td>
                 <td class="text-center">@reservation.BusNumber</td>
                 <td class="text-center">@reservation.NumberOfSeats</td>
                 <td class="text-center">@reservation.TicketPrice</td>

@@ -247,6 +247,7 @@ namespace VKBusReservation.Repository
                                   
                                   select new AddReservationDTO()
                                   {
+                                      CustomerId=customer.CustomerId,
                                       ReservationId = reservation.ReservationId,
                                       CustomerName = customer.CustomerName,
                                       BusNumber=bus.BusNumber,

@@ -1,0 +1,38 @@
+﻿@using VKBusReservation.Models
+@model List<CustomerDetails>
+@{
+    ViewData["Title"] = "Customer Details";
+}
+    <h2><center>@ViewData["Title"]</center></h2>
+<button type="button" class="btn btn-link"
+        onClick="GoHome()">Back to List</button>
+<table class="table borderd table-striped">
+    <tr style="background-color:#ddd;">
+        <th class="text-center">Reservation Id</th>
+        <th class="text-center">Bus Name</th>
+        <th class="text-center">Bus Number </th>
+        <th class="text-center">Reservation date</th>
+        <th class="text-center">Reserved Seats</th>
+        <th class="text-center">Ticket Price</th>
+        <th class="text-center">From</th>
+        <th class="text-center">To</th>
+    </tr>
+    @foreach (CustomerDetails customer in Model)
+    {
+        <tr>
+            <td class="text-center">@customer.ReservationId</td>
+            <td class="text-center">@customer.BusName</td>
+            <td class="text-center">@customer.BusNumber</td>
+            <td class="text-center">@String.Format("{0:MM/dd/yyyy}", @customer.Reservationdate)  </td>
+            <td class="text-center">@customer.ReservedSeats</td>
+            <td class="text-center">@customer.TicketPrice</td>
+            <td class="text-center">@customer.From</td>
+            <td class="text-center">@customer.To</td>
+        </tr>
+    }
+</table>
+<script>
+function GoHome() {
+    setTimeout(function () { window.location = '/Home/ReservationList'; }, 1000);
+}
+</script>
