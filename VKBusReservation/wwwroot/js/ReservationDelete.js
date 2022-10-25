@@ -23,10 +23,6 @@
 
 
 function details(id) {
-    let result = confirm("Are you sure you want to See the Customer Details?");
-    if (result) {
-        setTimeout(function () { window.location = '/Home/CustomerDetails?id=' + id; }, 1000);
-    } else {
-        setTimeout(function () { window.location = '/Home/ReservationList'; }, 500);
-    }
+        setTimeout(function () { window.location = '/Home/CustomerDetails?id=' + id; }, 500);
+    
 }

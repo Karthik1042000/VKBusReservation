@@ -2,6 +2,7 @@
 using VKBusReservation.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using VKBusReservation.Models.DTO;
 
 namespace BusReservationManagement.Controllers
 {
@@ -43,16 +44,16 @@ namespace BusReservationManagement.Controllers
 
         [HttpPost("BookTicket")]
 
-        public IActionResult BookTicket(Reservation reservation)
+        public IActionResult BookTicket(AddReservationDTO addReservation)
         {
-            return Ok(reservationRepository.BookTicket(reservation));
+            return Ok(reservationRepository.BookTicket(addReservation));
         }
 
 
         [HttpPut("Update")]
-        public ActionResult Update(Reservation reservation)
+        public ActionResult Update(AddReservationDTO addReservation)
         {
-            return Ok(reservationRepository.UpdateTicket(reservation));
+            return Ok(reservationRepository.UpdateTicket(addReservation));
         }
 
 

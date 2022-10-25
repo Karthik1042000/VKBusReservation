@@ -1,13 +1,16 @@
 ﻿$(document).ready(function () {
     $('#Reserve').submit(function (e) {
         e.preventDefault();
-        if ($('#BusId').val()) {
+        if ($('#busId').val()) {
             $.ajax({
-                url: "/Home/GetBus",
+                url: "/Home/SaveTicket",
                 type: "Post",
                 data: $("#Reserve").serialize(),
                 success: function (response) {
                     alert(response.message);
+                    if (response.success == true) {
+                        setTimeout(function () { window.location = '/Home/ReservationList'; }, 500);
+                    }
                 },
                 error: function () {
                     alert("error");
@@ -15,7 +18,7 @@
             });
         }
         else {
-            alert("Please select the bus");
+            alert("error ");
         }
     });
 });
@@ -38,7 +41,7 @@ function getBusDetail() {
                         .append('<td class="text-center">' + v.totalSeats + '</td>')
                         .append('<td class="text-center">' + sTime.getHours() + ":" + sTime.getMinutes() + '</td>')
                         .append('<td class="text-center">' + eTime.getHours() + ":" + eTime.getMinutes() + '</td>')
-                        .append('<td class="text-center"><button class="btn btn-success" onclick="setBus(\'' + v.busId + '\',\'' + v.busNumber + '\')">Select</button></td>')
+                        .append('<td class="text-center"><button class="btn btn-success" onclick="setBus(\'' + v.busId + '\',\'' + v.busNumber + '\',\'' + v.totalSeats + '\')">Select</button></td>')
                         .append('</tr>');
 
                 });
@@ -54,23 +57,39 @@ function getBusDetail() {
     }
 }
 
-function setBus(busId,busNumber) {
-    $('#BusId').val(busId);
+function setBus(busId,busNumber,totalSeat) {
+    $('#busId').val(busId);
+    $('#totalNumberOfSeat').val(totalSeat);
     $('#busNumber').text(busNumber);
-    //$('#reservedSeat').text(bus.busNumber);
-    //$('#availableSeat').text(bus.busNumber);
-    $('#busList').hide();
     alert("Bus Selected Successfully");
+    $('#busList').hide();
 }
 
-function getReservation(busId) {
-    $.ajax({
-        url: "/Home/GetReservation?id=" + busId,
-        type: "Get",
-        success: function (response) {
-            if (response == null) {
-                response.available
+function getReservation() {
+    console.log($('#busId').val());
+    
+    console.log($('#Reservationdate').val());
+    if ($('#busId').val() && $('#Reservationdate').val()) {
+        $.ajax({
+            url: "/Home/GetReservation?id=" + $('#busId').val() + "&date=" + $('#Reservationdate').val(),
+            type: "Post",
+            success: function (data) {
+                console.log(data);
+                if (data == null) {
+                    $('#reservedSeat').text(0);
+                    $('#availableSeat').text($('#totalNumberOfSeat').val());
+                    $('#reservedSeats').val(0);
+                    $('#availableSeats').val($('#totalNumberOfSeat').val());
+                    console.log($('#reservedSeats').val());
+                }
+                else {
+                    $('#reservedSeat').text(data.reservedSeats);
+                    $('#availableSeat').text(data.availableSeats);
+                }
             }
-        }
-    });
+        });
+    }
+    else {
+        alert("error");
+    }
 }

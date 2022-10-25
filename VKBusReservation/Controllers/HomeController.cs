@@ -126,11 +126,6 @@ namespace BusReservationManagement.Controllers
         public IActionResult BookTicket()
         {
             AddReservationDTO reservation = new AddReservationDTO();
-            reservation.BusList = busRepository.GetAll().Select(a => new SelectListItem
-            {
-                Text = a.BusName + "(" + a.BusNumber + ")",
-                Value = a.BusId.ToString()
-            }).ToList();
             reservation.CustomerList = customerRepository.GetAll().Select(a => new SelectListItem
             {
                 Text = a.CustomerName + "(" + a.CustomerId + ")",
@@ -159,21 +154,23 @@ namespace BusReservationManagement.Controllers
             return Json(bus);
         }
 
-        public ActionResult GetReservation(int id)
+        [HttpPost]
+        public ActionResult GetReservation(int id,DateTime date)
         {
-            var bus = reservationRepository.GetAll().LastOrDefault(x => x.BusId == id);
-            return Json(bus);
+            var bus = reservationRepository.GetAll().Where(x => x.BusId == id).ToList();
+            var last = bus.LastOrDefault(x => x.Reservationdate == date);
+            return Json(last);
         }
         [HttpPost]
-        public ActionResult SaveTicket(Reservation reservation)
-        {
-            if (reservation.ReservationId > 0)
+        public ActionResult SaveTicket(AddReservationDTO addReservation)
+         {
+            if (addReservation.ReservationId > 0)
             {
-                return Json(reservationRepository.UpdateTicket(reservation));
+                return Json(reservationRepository.UpdateTicket(addReservation));
             }
             else
             {
-                return Json(reservationRepository.BookTicket(reservation));
+                return Json(reservationRepository.BookTicket(addReservation));
             }
         }
 
@@ -187,7 +184,37 @@ namespace BusReservationManagement.Controllers
         [HttpGet]
         public ActionResult EditReservation(int id)
         {
-            var reservation = reservationRepository.ReservationDetailsById(id);
+            var detail = reservationRepository.ReservationDetailsById(id);
+            AddReservationDTO reservation = new AddReservationDTO();
+            reservation.CustomerId = detail.CustomerId;
+            reservation.BusId = detail.BusId;
+            reservation.ReservationId = detail.ReservationId;
+            reservation.AvailableSeats = detail.AvailableSeats;
+            reservation.NumberOfSeats = detail.NumberOfSeats;
+            reservation.Reservationdate = detail.Reservationdate;
+            reservation.ReservationTime = DateTime.Now;
+            reservation.ReservedSeats = detail.ReservedSeats;
+            reservation.CustomerList = customerRepository.GetAll().Select(a => new SelectListItem
+            {
+                Text = a.CustomerName + "(" + a.CustomerId + ")",
+                Value = a.CustomerId.ToString()
+            }).ToList();
+            reservation.CustomerList.Insert(0, new SelectListItem { Text = "Select Customer", Value = "" });
+
+            reservation.FromList = busRepository.GetAll().DistinctBy(x => x.From).Select(a => new SelectListItem
+            {
+                Text = a.From,
+                Value = a.From.ToString()
+            }).ToList();
+            reservation.FromList.Insert(0, new SelectListItem { Text = "Select From", Value = "" });
+
+            reservation.ToList = busRepository.GetAll().DistinctBy(x => x.To).Select(a => new SelectListItem
+            {
+                Text = a.To,
+                Value = a.To.ToString()
+            }).ToList();
+            reservation.ToList.Insert(0, new SelectListItem { Text = "Select Destination", Value = "" });
+
             return View("BookTicket", reservation);
         }
 

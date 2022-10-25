@@ -15,8 +15,17 @@ namespace VKBusReservation.Repository
         }
 
 
-        public Messages BookTicket(Reservation reservation)
+        public Messages BookTicket(AddReservationDTO addReservation)
         {
+            Reservation reservation = new Reservation();
+            reservation.CustomerId = addReservation.CustomerId;
+            reservation.BusId= addReservation.BusId;
+            reservation.ReservationId= addReservation.ReservationId;
+            reservation.AvailableSeats = addReservation.AvailableSeats;
+            reservation.NumberOfSeats= addReservation.NumberOfSeats;
+            reservation.Reservationdate= addReservation.Reservationdate;
+            reservation.ReservationTime = DateTime.Now;
+            reservation.ReservedSeats = addReservation.ReservedSeats;
             Messages messages = new Messages();
             messages.Success = false;
             var busExist = GetBus(reservation.BusId);
@@ -37,6 +46,11 @@ namespace VKBusReservation.Repository
 
             if (reservation.ReservationTime < ticketDate)
             {
+                if (reservation.Reservationdate < ticketDate)
+                {
+                    messages.Message = "You entered the Wrong Date";
+                    return messages;
+                }
                 var busList = db.Reservations.Where(x => x.BusId == reservation.BusId).ToList();
                 var timeExist = busList.LastOrDefault(x => x.Reservationdate == reservation.Reservationdate);
                 if (timeExist == null)
@@ -65,7 +79,7 @@ namespace VKBusReservation.Repository
             }
             if (reservation.Reservationdate < ticketDate)
             {
-                messages.Message = "The Bus is already in travel";
+                messages.Message = "You entered the Wrong Date";
                 return messages;
             }
             var newBusList = db.Reservations.Where(x => x.BusId == reservation.BusId).ToList();
@@ -132,8 +146,17 @@ namespace VKBusReservation.Repository
         
 
 
-        public Messages UpdateTicket(Reservation reservation)
+        public Messages UpdateTicket(AddReservationDTO addReservation)
         {
+            Reservation reservation = new Reservation();
+            reservation.CustomerId = addReservation.CustomerId;
+            reservation.BusId = addReservation.BusId;
+            reservation.ReservationId = addReservation.ReservationId;
+            reservation.AvailableSeats = addReservation.AvailableSeats;
+            reservation.NumberOfSeats = addReservation.NumberOfSeats;
+            reservation.Reservationdate = addReservation.Reservationdate;
+            reservation.ReservationTime = DateTime.Now;
+            reservation.ReservedSeats = addReservation.ReservedSeats;
             Messages messages = new Messages();
             messages.Success = false;
             var exist = ReservationDetailsById(reservation.ReservationId);

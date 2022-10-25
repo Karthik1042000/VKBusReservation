@@ -5,9 +5,9 @@ namespace VKBusReservation.Repository
 {
     public interface IReservationRepository
     {
-        public Messages BookTicket(Reservation reservation);
+        public Messages BookTicket(AddReservationDTO addReservation);
 
-        public Messages UpdateTicket(Reservation reservation);
+        public Messages UpdateTicket(AddReservationDTO addReservation);
         public Reservation ReservationDetailsById(int id);
         public Bus GetBus(int id);
         public Customer GetCustomer(int id);
