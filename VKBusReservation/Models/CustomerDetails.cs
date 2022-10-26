@@ -12,4 +12,9 @@
         public string From { get; set; }
         public string To { get; set; }
     }
+    public class CustomerList
+    {
+        public string CustomerName { get; set; }
+        public List<CustomerDetails> Customers { get; set; }
+    }
 }

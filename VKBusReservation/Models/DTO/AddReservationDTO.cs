@@ -12,7 +12,7 @@ namespace VKBusReservation.Models.DTO
         public string From { get; set; } = string.Empty;
         public string To { get; set; } = string.Empty;
         public DateTime ReservationTime { get; set; } = DateTime.Now;
-        public DateTime Reservationdate { get; set; }
+        public string Reservationdate { get; set; }
 
 
         public int? ReservedSeats { get; set; }

@@ -23,7 +23,7 @@ namespace VKBusReservation.Repository
             reservation.ReservationId= addReservation.ReservationId;
             reservation.AvailableSeats = addReservation.AvailableSeats;
             reservation.NumberOfSeats= addReservation.NumberOfSeats;
-            reservation.Reservationdate= addReservation.Reservationdate;
+            reservation.Reservationdate= Convert.ToDateTime(addReservation.Reservationdate);
             reservation.ReservationTime = DateTime.Now;
             reservation.ReservedSeats = addReservation.ReservedSeats;
             Messages messages = new Messages();
@@ -154,7 +154,7 @@ namespace VKBusReservation.Repository
             reservation.ReservationId = addReservation.ReservationId;
             reservation.AvailableSeats = addReservation.AvailableSeats;
             reservation.NumberOfSeats = addReservation.NumberOfSeats;
-            reservation.Reservationdate = addReservation.Reservationdate;
+            reservation.Reservationdate =Convert.ToDateTime(addReservation.Reservationdate);
             reservation.ReservationTime = DateTime.Now;
             reservation.ReservedSeats = addReservation.ReservedSeats;
             Messages messages = new Messages();
@@ -278,7 +278,7 @@ namespace VKBusReservation.Repository
                                       TicketPrice=bus.TicketPrice * reservation.NumberOfSeats,
                                       From=bus.From,
                                       To=bus.To,
-                                      Reservationdate=reservation.Reservationdate,  
+                                      Reservationdate=reservation.Reservationdate.ToString("dd/M/yyyy")
 
 
                                   }).ToList();

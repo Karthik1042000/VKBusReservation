@@ -4,6 +4,7 @@
     ViewData["Title"] = "Book Ticket";
     ViewData["Title2"] = "Edit Ticket";
     Layout = "~/Views/Shared/_LayoutReservation.cshtml";
+    var minDate = DateTime.Now.ToString("yyyy-MM-d");
 }
 @if (Model.ReservationId <= 0)
 {
@@ -19,78 +20,89 @@ else
         color: red;
     }
 </style>
+
+<div>
+    <div style="width:100%">
+        <div style="width:40%; float:left;">
 @using (Html.BeginForm(FormMethod.Post, new { id = "Reserve" }))
 {
-    <div class="w-50 p-3 text-dark  border rounded-3 " style="background-color: #eee;">
+    <div class="p-3 text-dark  border rounded-3 " style="background-color: #eee;">
         @Html.HiddenFor(m => m.ReservationId )
         <div class="mb-3  row" >
-            <div class=" col-3">
+            <div class=" col-4">
                 <label class="form-label required ">  Customer Name</label>
             </div>
-            <div class="col-4">
-                @Html.DropDownListFor(model => model.CustomerId,Model.CustomerList  , new { @class="form-control"})
-            </div>
-        </div>
+                        <div class="col-5">
+                            @if (Model.ReservationId <= 0)
+                            {
+                                @Html.DropDownListFor(model => model.CustomerId,Model.CustomerList  , new { @class="form-control"})
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(m => m.CustomerName, new { @class="form-control",@readonly="readonly"})
+                                @Html.HiddenFor(m => m.CustomerId)
+                            }
+                        </div>
+                    </div>
         <div class="mb-3  row" >
-            <div class=" col-3">
+            <div class=" col-4">
                 <label class="form-label required">  From</label>
             </div>
-            <div class="col-4">
+            <div class="col-5">
                 @Html.DropDownListFor(model => model.From,Model.FromList, new {@onChange="getBusDetail()" , required = "required", @class="form-control"})
                 </div>
         </div>
         <div class="mb-3 row ">
-            <div class="col-3">
+            <div class="col-4">
                 <label class="form-label required">To</label>
             </div>
-            <div class="col-4">
+            <div class="col-5">
                 @Html.DropDownListFor(model => model.To,Model.ToList  , new {@onChange="getBusDetail()", required = "required" ,@class="form-control"})
             </div>
         </div>
         <div class="mb-3 row ">
-            <div class="col-3">
+            <div class="col-4">
                 <label class="form-label required">Date</label>
             </div>
-            <div class="col-4">
-                @Html.TextBoxFor(m => m.Reservationdate , new {@onChange="getReservation()",@class="form-control", required = "required" ,type="date"})
+            <div class="col-5">
+                            @Html.TextBoxFor(m => m.Reservationdate , new {@onChange="getReservation()",@class="form-control", required = "required" ,type="date",min=@minDate})
             </div>
         </div>
         <div class="mb-3  row ">
-            <div class="col-3">
+            <div class="col-4">
                 <label class="form-label">Bus Number</label>
             </div>
-            <div class="col-4 border">
-                <label class="form-label" id="busNumber", new {@class="form-control"}></label>
+                        <div class="col-5">
+                            @Html.TextBoxFor(m => m.BusNumber, new { @class="form-control",@readonly="readonly",id="busNumber"})
             </div>
         </div>
         <div class="mb-3  row ">
-            <div class="col-3">
+            <div class="col-4">
                 <label class="form-label">Available Seats</label>
             </div>
-            <div class="col-4 border">
-                <label class="form-label" id="availableSeat" , new {@class="form-control" }></label>
-                @Html.HiddenFor(m => m.AvailableSeats ,new{@class="form-control" ,id="availableSeats"} )
+                        <div class="col-5 ">
+                            @Html.TextBoxFor(m => m.AvailableSeats, new { @class="form-control",@readonly="readonly",id="availableSeats"})
             </div>
         </div>
         <div class="mb-3  row ">
-            <div class="col-3">
+            <div class="col-4">
                 <label class="form-label">Reserved Seats</label>
             </div>
-            <div class="col-4 border">
-                <label class="form-label" id="reservedSeat" , new {@class="form-control" }></label>
-                @Html.HiddenFor(m => m.ReservedSeats ,new{@class="form-control" ,id="reservedSeats"} )
+                        <div class="col-5">
+               @* <label class="form-label" id="reservedSeat"></label>*@
+                            @Html.TextBoxFor(m => m.ReservedSeats, new { @class="form-control",@readonly="readonly",id="reservedSeats"})
             </div>
         </div>
         <div class="mb-3  row ">
-            <div class="col-3">
-                <label class="form-label">Number Of BookingSeats</label>
-            </div>
             <div class="col-4">
+                <label class="form-label required">Number Of BookingSeats</label>
+            </div>
+            <div class="col-5">
                 @Html.TextBoxFor(m => m.NumberOfSeats , new {@class="form-control", required = "required" ,type ="number",min = "1" ,max = "50"})
             </div>
         </div>
         <div class="mb-3 row justify-content-center">
-            <div class="col-3">
+            <div class="col-4">
                 <button type="submit" class="btn btn-outline-primary">Submit</button>
                 
             </div>
@@ -99,9 +111,10 @@ else
         @Html.HiddenFor(m => m.BusId ,new{@class="form-control" ,id="busId"} )
     </div>
 }
-
+        </div>
+        <div class="container-fluid" style="width:60%; float:right;">
 <table id="busList" class="table table-hover borderd " style="display:none">
-    <thead style="background-color:#ddd;">
+                <thead style="background-color:#f6f6f6;">
     <tr>
             <th class="text-center">Bus Id</th>
             <th class="text-center">Bus Name</th>
@@ -118,3 +131,6 @@ else
   </tbody>
   </table>
 
+        </div>
+    </div>
+</div>

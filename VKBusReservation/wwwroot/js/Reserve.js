@@ -41,8 +41,8 @@ function getBusDetail() {
                         .append('<td class="text-center">' + v.totalSeats + '</td>')
                         .append('<td class="text-center">' + sTime.getHours() + ":" + sTime.getMinutes() + '</td>')
                         .append('<td class="text-center">' + eTime.getHours() + ":" + eTime.getMinutes() + '</td>')
-                        .append('<td class="text-center"><button class="btn btn-success" onclick="setBus(\'' + v.busId + '\',\'' + v.busNumber + '\',\'' + v.totalSeats + '\')">Select</button></td>')
-                        .append('</tr>');
+                        .append('<td class="text-center"><button type="button" class="btn btn-outline-success" onclick="setBus(\'' + v.busId + '\',\'' + v.busNumber + '\',\'' + v.totalSeats + '\')">Select</button></td>')
+                        .append('</tr>'); 
 
                 });
                 $('#busList').show();
@@ -61,6 +61,7 @@ function setBus(busId,busNumber,totalSeat) {
     $('#busId').val(busId);
     $('#totalNumberOfSeat').val(totalSeat);
     $('#busNumber').text(busNumber);
+    $('#busNumber').val(busNumber);
     alert("Bus Selected Successfully");
     $('#busList').hide();
 }
@@ -74,17 +75,17 @@ function getReservation() {
             url: "/Home/GetReservation?id=" + $('#busId').val() + "&date=" + $('#Reservationdate').val(),
             type: "Post",
             success: function (data) {
-                console.log(data);
                 if (data == null) {
                     $('#reservedSeat').text(0);
                     $('#availableSeat').text($('#totalNumberOfSeat').val());
                     $('#reservedSeats').val(0);
                     $('#availableSeats').val($('#totalNumberOfSeat').val());
-                    console.log($('#reservedSeats').val());
                 }
                 else {
                     $('#reservedSeat').text(data.reservedSeats);
                     $('#availableSeat').text(data.availableSeats);
+                    $('#reservedSeats').val(data.reservedSeats);
+                    $('#availableSeats').val(data.availableSeats);
                 }
             }
         });

@@ -5,6 +5,7 @@ using System.Diagnostics;
 using VKBusReservation.Models.DTO;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq;
+using System.Globalization;
 
 namespace BusReservationManagement.Controllers
 {
@@ -120,8 +121,11 @@ namespace BusReservationManagement.Controllers
 
         public IActionResult CustomerDetails(int id)
         {
-            var details = reservationRepository.ReservationDetailsByCustomerId(id);
-            return View(details);
+            CustomerList customers = new CustomerList();
+            var customer = customerRepository.GetById(id);
+            customers.CustomerName = customer.CustomerName;
+            customers.Customers = reservationRepository.ReservationDetailsByCustomerId(id).ToList();
+            return View(customers);
         }
         public IActionResult BookTicket()
         {
@@ -185,14 +189,22 @@ namespace BusReservationManagement.Controllers
         public ActionResult EditReservation(int id)
         {
             var detail = reservationRepository.ReservationDetailsById(id);
+            var customer = customerRepository.GetById(detail.CustomerId);
+            var bus = busRepository.GetByBusId(detail.BusId);
             AddReservationDTO reservation = new AddReservationDTO();
             reservation.CustomerId = detail.CustomerId;
+            reservation.CustomerName = customer.CustomerName;
             reservation.BusId = detail.BusId;
+            reservation.BusNumber = bus.BusNumber;
+            reservation.From = bus.From;
+            reservation.To = bus.To;
             reservation.ReservationId = detail.ReservationId;
             reservation.AvailableSeats = detail.AvailableSeats;
             reservation.NumberOfSeats = detail.NumberOfSeats;
-            reservation.Reservationdate = detail.Reservationdate;
-            reservation.ReservationTime = DateTime.Now;
+            reservation.Reservationdate = detail.Reservationdate.ToString("yyyy-MM-d");
+            //reservation.Reservationdate = DateTime.ParseExact(detail.Reservationdate.ToString("dd/M/yyyy"), "yyyy/MM/d",
+            //                       CultureInfo.InvariantCulture);
+            //reservation.ReservationTime = DateTime.Now;
             reservation.ReservedSeats = detail.ReservedSeats;
             reservation.CustomerList = customerRepository.GetAll().Select(a => new SelectListItem
             {

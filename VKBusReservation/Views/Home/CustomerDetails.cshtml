@@ -1,11 +1,24 @@
 ﻿@using VKBusReservation.Models
-@model List<CustomerDetails>
+@model CustomerList
 @{
-    ViewData["Title"] = "Customer Details";
+    Layout = "~/Views/Shared/_LayoutReservation.cshtml";
+    ViewData["Title"] = " Reservation Details";
 }
-    <h2><center>@ViewData["Title"]</center></h2>
+    <h3><center>@ViewData["Title"]</center></h3>
+<div class="container" style=" float:left;">
+    <div class="row">
+        <div >
+            Customer Name :
+        </div>
+        <div >
+            <b> @Model.CustomerName</b>
+        </div>
+</div>
+</div>
 <button type="button" class="btn btn-link"
-        onClick="GoHome()">Back to List</button>
+        style="background-color:lightgoldenrodyellow;" onClick="GoHome()">
+    Back to List
+</button>
 <table class="table table-hover borderd ">
     <tr style="background-color:#ddd;">
         <th class="text-center">Reservation Id</th>
@@ -17,7 +30,7 @@
         <th class="text-center">From</th>
         <th class="text-center">To</th>
     </tr>
-    @foreach (CustomerDetails customer in Model)
+    @foreach (CustomerDetails customer in Model.Customers)
     {
         <tr>
             <td class="text-center">@customer.ReservationId</td>
