@@ -40,8 +40,7 @@ namespace BusReservationManagement.Controllers
         }
         public IActionResult CreateCustomer()
         {
-            Customer customer = new Customer();
-            return View(customer);
+            return View();
         }
 
         [HttpPost]
@@ -81,8 +80,7 @@ namespace BusReservationManagement.Controllers
         }
         public IActionResult CreateBus()
         {
-            Bus bus = new Bus();
-            return View(bus);
+            return View();
         }
 
         [HttpPost]

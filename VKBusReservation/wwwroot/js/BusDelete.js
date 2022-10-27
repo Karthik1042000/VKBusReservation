@@ -19,3 +19,6 @@
         });
     }
 }
+function GoBus() {
+    setTimeout(function () { window.location = '/Home/AllBuses'; }, 100);
+}

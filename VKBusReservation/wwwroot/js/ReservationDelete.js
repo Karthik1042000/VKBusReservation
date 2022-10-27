@@ -26,3 +26,6 @@ function details(id) {
         setTimeout(function () { window.location = '/Home/CustomerDetails?id=' + id; }, 500);
     
 }
+function GoHome() {
+    setTimeout(function () { window.location = '/Home/ReservationList'; }, 100);
+}

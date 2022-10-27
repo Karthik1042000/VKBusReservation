@@ -3,9 +3,16 @@
 @{
     ViewData["Title"] = "Book Ticket";
     ViewData["Title2"] = "Edit Ticket";
-    Layout = "~/Views/Shared/_LayoutReservation.cshtml";
+    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
     var minDate = DateTime.Now.ToString("yyyy-MM-d");
 }
+<button type="button" class="btn btn-light pb-2"
+        style="background-color:lightgoldenrodyellow;" onclick="GoHome()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
+    </svg>
+    Back to List
+</button>
 @if (Model.ReservationId <= 0)
 {
      <h2 class="text-danger">@ViewData["Title"]</h2>
@@ -22,7 +29,7 @@ else
 </style>
 
 <div>
-    <div style="width:100%">
+    <div style="width:100%" >
         <div style="width:40%; float:left;">
 @using (Html.BeginForm(FormMethod.Post, new { id = "Reserve" }))
 {
@@ -114,7 +121,7 @@ else
         </div>
         <div class="container-fluid" style="width:60%; float:right;">
 <table id="busList" class="table table-hover borderd " style="display:none">
-                <thead style="background-color:#f6f6f6;">
+                <thead style="background-color:#ddd;">
     <tr>
             <th class="text-center">Bus Id</th>
             <th class="text-center">Bus Name</th>

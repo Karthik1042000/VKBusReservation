@@ -19,4 +19,6 @@
         });
     }
 }
-
+function GoCustomer() {
+    setTimeout(function () { window.location = '/Home/CustomerList'; }, 100);
+}

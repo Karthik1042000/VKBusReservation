@@ -17,4 +17,15 @@
             }
         });
     });
+    $('.toast').toast('show');
+    $('#TripStartTime').on('change', function () {
+        var date = $(this).val();
+        $('#TripEndTime').attr('min', date);
+    });
+    $('#TripEndTime').on('change', function () {
+        if (new Date($(this).val()) < new Date($('#TripStartTime').val()))
+        {
+            alert('Trip End Date and Time Should be greater than Trip Start Date and Time')
+        }
+    });
 });
