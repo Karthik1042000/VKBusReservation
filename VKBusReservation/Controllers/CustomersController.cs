@@ -3,6 +3,7 @@ using VKBusReservation.Repository;
 using Castle.Core.Resource;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using VKBusReservation.Models.DTO;
 
 namespace BusReservationManagement.Controllers
 {
@@ -44,14 +45,14 @@ namespace BusReservationManagement.Controllers
 
         [HttpPost("Add")]
 
-        public IActionResult Add(Customer customer)
+        public IActionResult Add(AddCustomerDTO customer)
         {
             return Ok(customerRepository.CreateCustomer(customer));
         }
 
 
         [HttpPut("Update")]
-        public ActionResult Update(Customer customer)
+        public ActionResult Update(AddCustomerDTO customer)
         {
             return Ok(customerRepository.Update(customer));
         }

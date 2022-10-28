@@ -6,6 +6,10 @@ using VKBusReservation.Models.DTO;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq;
 using System.Globalization;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BusReservationManagement.Controllers
 {
@@ -27,6 +31,7 @@ namespace BusReservationManagement.Controllers
             customerRepository = _customerRepository;
             busRepository = _busRepository;
         }
+        [Authorize]
         public IActionResult Index()
         {
             return View();
@@ -40,11 +45,18 @@ namespace BusReservationManagement.Controllers
         }
         public IActionResult CreateCustomer()
         {
-            return View();
+            AddCustomerDTO Customer = new AddCustomerDTO();
+            Customer.RoleIds = customerRepository.GetAllRoles().Select(a => new SelectListItem
+            {
+                Text = a.RoleName,
+                Value = a.RoleId.ToString()
+            }).ToList();
+            Customer.RoleIds.Insert(0, new SelectListItem { Text = "Select Role", Value = "" });
+            return View(Customer);
         }
 
         [HttpPost]
-        public ActionResult Save(Customer customer)
+        public ActionResult Save(AddCustomerDTO customer)
         {
             if (customer.CustomerId > 0)
             {
@@ -68,7 +80,16 @@ namespace BusReservationManagement.Controllers
         [HttpGet]
         public ActionResult Edit(int id)
         {
-            var customer = customerRepository.GetById(id);
+            var customerDTO = customerRepository.GetById(id);
+            AddCustomerDTO customer = new AddCustomerDTO();
+            customer.CustomerName = customerDTO.CustomerName;
+            customer.PhoneNumber = customerDTO.PhoneNumber;
+            customer.City = customerDTO.City;
+            customer.EmailId = customerDTO.EmailId;
+            customer.Password = customerDTO.Password;
+            customer.RoleId = customerDTO.RoleId;
+            customer.Pincode = customerDTO.Pincode;
+            customer.CustomerId = customerDTO.CustomerId;
             return View("CreateCustomer", customer);
         }
 
@@ -200,9 +221,6 @@ namespace BusReservationManagement.Controllers
             reservation.AvailableSeats = detail.AvailableSeats;
             reservation.NumberOfSeats = detail.NumberOfSeats;
             reservation.Reservationdate = detail.Reservationdate.ToString("yyyy-MM-d");
-            //reservation.Reservationdate = DateTime.ParseExact(detail.Reservationdate.ToString("dd/M/yyyy"), "yyyy/MM/d",
-            //                       CultureInfo.InvariantCulture);
-            //reservation.ReservationTime = DateTime.Now;
             reservation.ReservedSeats = detail.ReservedSeats;
             reservation.CustomerList = customerRepository.GetAll().Select(a => new SelectListItem
             {
@@ -227,6 +245,38 @@ namespace BusReservationManagement.Controllers
 
             return View("BookTicket", reservation);
         }
+        public IActionResult Login()
+        {
+            return View();
+        }
 
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginDTO login)
+        {
+            var user = customerRepository.GetLoginDetail(login.EmailId,login.Password);
+            if (user != null)
+            {
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.NameIdentifier , user.CustomerId.ToString()),
+                    new Claim(ClaimTypes.Name, user.CustomerName),
+                    new Claim(ClaimTypes.Role, user.RoleName)
+
+                };
+                var claimsIdentity = new ClaimsIdentity(claims, "Login");
+
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+                return Redirect(login.ReturnUrl == null ? "/Home" : login.ReturnUrl);
+            }
+            else
+                return View(login);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+        }
     }
 }
+

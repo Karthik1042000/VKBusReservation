@@ -16,6 +16,6 @@ namespace VKBusReservation.Models
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Bus> Buses { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
-
+        public DbSet<Role> Roles { get; set; }
     }
 }

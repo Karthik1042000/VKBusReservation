@@ -1,0 +1,52 @@
+﻿@using VKBusReservation.Models.DTO
+@model LoginDTO
+@{
+    string title = "LogIn";
+     Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+
+    <center> <h2 class="text-primary">@title</h2></center>
+
+<style>
+    .required:after {
+        content: " *";
+        color: red;
+    }
+</style>
+@using (Html.BeginForm(FormMethod.Post))
+{
+    <div class="container border rounded-3  pt-3  bg-light text-dark w-50">
+
+        <div class="mb-3 row justify-content-center">
+            <div class="col-3">
+                <label class="form-label required">Email Id</label>
+            </div>
+            <div class="col-4">
+                @Html.TextBoxFor(m => m.EmailId , new {@class="form-control", required = "required" , type= "email"})
+            </div>
+        </div>
+        <div class="mb-3 row justify-content-center">
+            <div class="col-3">
+                <label class="form-label required">Password</label>
+            </div>
+            <div class="col-4">
+                @Html.TextBoxFor(m => m.Password , new {@class="form-control", required = "required" ,type="password",minlength = "6",maxlength = "10"})
+            </div>
+        </div>
+        <div class="mb-3 row justify-content-center">
+            <div class="col-3">
+                <button type="submit" class="btn btn-outline-primary">Sign In</button>
+            </div>
+        </div>
+    </div>
+}
+@*<form method="post">
+    <input type="text" name="username" placeholder="Username">
+    <input type="password" name="password" placeholder="Password">
+    <button>Sign in</button>
+</form>
+*@
+
+
+
+

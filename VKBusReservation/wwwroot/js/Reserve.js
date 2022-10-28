@@ -31,21 +31,31 @@ function getBusDetail() {
                 console.log(data);
                 var table = $('#busList tbody');
                 table.html('');
-                $.each(data, function (i, v) {
-                    let sTime = new Date(v.tripStartTime);
-                    let eTime = new Date(v.tripEndTime);
-                    table.append('<tr>').append('<td class="text-center">' + v.busId + '</td>')
-                        .append('<td class="text-center">' + v.busName + '</td>')
-                        .append('<td class="text-center">' + v.busNumber + '</td>')
-                        .append('<td class="text-center">' + v.ticketPrice + '</td>')
-                        .append('<td class="text-center">' + v.totalSeats + '</td>')
-                        .append('<td class="text-center">' + sTime.getHours() + ":" + sTime.getMinutes() + '</td>')
-                        .append('<td class="text-center">' + eTime.getHours() + ":" + eTime.getMinutes() + '</td>')
-                        .append('<td class="text-center"><button type="button" class="btn btn-outline-success" onclick="setBus(\'' + v.busId + '\',\'' + v.busNumber + '\',\'' + v.totalSeats + '\')">Select</button></td>')
-                        .append('</tr>'); 
+                if (data.length != 0) {
 
-                });
-                $('#busList').show();
+                    $.each(data, function (i, v) {
+                        let sTime = new Date(v.tripStartTime);
+                        let eTime = new Date(v.tripEndTime);
+                        table.append('<tr>').append('<td class="text-center">' + v.busId + '</td>')
+                            .append('<td class="text-center">' + v.busName + '</td>')
+                            .append('<td class="text-center">' + v.busNumber + '</td>')
+                            .append('<td class="text-center">' + v.ticketPrice + '</td>')
+                            .append('<td class="text-center">' + v.totalSeats + '</td>')
+                            .append('<td class="text-center">' + sTime.getHours() + ":" + sTime.getMinutes() + '</td>')
+                            .append('<td class="text-center">' + eTime.getHours() + ":" + eTime.getMinutes() + '</td>')
+                            .append('<td class="text-center"><button type="button" class="btn btn-outline-success" onclick="setBus(\'' + v.busId + '\',\'' + v.busNumber + '\',\'' + v.totalSeats + '\')">Select</button></td>')
+                            .append('</tr>');
+
+                    });
+                    $('#busList').show();
+                }
+                   
+                else {
+                    table.append('<tr>')
+                        .append('<td colspan="8" class="text-center"> No Data To Display !!!! </td>')
+                        .append('</tr>');
+                    $('#busList').show();
+                }
             },
             error: function () {
                 alert("error");

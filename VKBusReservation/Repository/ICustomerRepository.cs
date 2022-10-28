@@ -1,12 +1,13 @@
 ﻿using VKBusReservation.Models;
+using VKBusReservation.Models.DTO;
 
 namespace VKBusReservation.Repository
 {
     public interface ICustomerRepository
     {
-        public Messages CreateCustomer(Customer customer);
+        public Messages CreateCustomer(AddCustomerDTO customerDTO);
 
-        public Messages Update(Customer customer);
+        public Messages Update(AddCustomerDTO customerDTO);
 
         public List<Customer> GetAll();
 
@@ -17,5 +18,7 @@ namespace VKBusReservation.Repository
         public Customer GetByEmailId(string emailId);
 
         public Messages DeleteCustomer(int customerId);
+        public LoginResultDTO GetLoginDetail(string emailId, string password);
+        public List<Role> GetAllRoles();
     }
 }

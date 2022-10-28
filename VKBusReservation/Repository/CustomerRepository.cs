@@ -2,6 +2,7 @@
 using Castle.Core.Resource;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using VKBusReservation.Models.DTO;
 
 namespace VKBusReservation.Repository
 {
@@ -14,8 +15,17 @@ namespace VKBusReservation.Repository
         }
 
 
-        public Messages CreateCustomer(Customer customer)
+        public Messages CreateCustomer(AddCustomerDTO customerDTO)
         {
+            Customer customer = new Customer();
+            customer.CustomerName=customerDTO.CustomerName;
+            customer.PhoneNumber=customerDTO.PhoneNumber;
+            customer.City=customerDTO.City;
+            customer.EmailId=customerDTO.EmailId;
+            customer.Password = customerDTO.Password;
+            customer.RoleId=customerDTO.RoleId;
+            customer.Pincode=customerDTO.Pincode;
+            customer.CustomerId=customerDTO.CustomerId;
             Messages messages = new Messages();
             messages.Success = false;
             var customerExist = GetByPhoneNumber(customer.PhoneNumber);
@@ -68,7 +78,10 @@ namespace VKBusReservation.Repository
             }
 
         }
-
+        public List<Role> GetAllRoles()
+        {
+            return db.Roles.ToList();
+        }
 
         public List<Customer> GetAll()
         {
@@ -96,8 +109,17 @@ namespace VKBusReservation.Repository
         }
 
 
-        public Messages Update(Customer customer) 
+        public Messages Update(AddCustomerDTO customerDTO) 
         {
+            Customer customer = new Customer();
+            customer.CustomerName = customerDTO.CustomerName;
+            customer.PhoneNumber = customerDTO.PhoneNumber;
+            customer.City = customerDTO.City;
+            customer.EmailId = customerDTO.EmailId;
+            customer.Password = customerDTO.Password;
+            customer.RoleId = customerDTO.RoleId;
+            customer.Pincode = customerDTO.Pincode;
+            customer.CustomerId = customerDTO.CustomerId;
             Messages messages = new Messages();
             messages.Success = false;
             var customerExist = GetById(customer.CustomerId);
@@ -133,6 +155,19 @@ namespace VKBusReservation.Repository
             }
 
         }
-
+        public LoginResultDTO GetLoginDetail(string emailId, string password)
+        {
+            var customers = (from customer in db.Customers
+                             join role in db.Roles on customer.RoleId equals role.RoleId
+                             where customer.Password == password && customer.EmailId == emailId
+                            select new LoginResultDTO()
+                            {
+                                CustomerId = customer.CustomerId,
+                                CustomerName = customer.CustomerName,
+                                RoleName = role.RoleName,
+                                EmailId = customer.EmailId
+                            }).FirstOrDefault();
+            return customers;
+        }
     }
 }
