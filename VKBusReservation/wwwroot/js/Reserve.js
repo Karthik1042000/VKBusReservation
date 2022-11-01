@@ -9,7 +9,7 @@
                 success: function (response) {
                     alert(response.message);
                     if (response.success == true) {
-                        setTimeout(function () { window.location = '/Home/ReservationList'; }, 500);
+                        setTimeout(function () { window.location = '/Home/Index'; }, 500);
                     }
                 },
                 error: function () {

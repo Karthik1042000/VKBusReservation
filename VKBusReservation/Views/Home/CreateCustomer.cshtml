@@ -49,7 +49,26 @@
                 <label class="form-label required">Role</label>
             </div>
             <div class="col-4">
-                @Html.DropDownListFor(model => model.RoleId,Model.RoleIds  , new { required = "required" ,@class="form-control"})
+            @if (User.Identity.IsAuthenticated)
+            {
+                var role = User.Identity.GetClaimValue("role");
+                if (role == "Admin")
+                {
+                        @Html.DropDownListFor(model => model.RoleId,Model.RoleIds  , new { required = "required" ,@class="form-control"})
+                }
+                else
+                {
+                        { Model.RoleId = 1; }
+                        @Html.HiddenFor(model => model.RoleId)
+                        @Html.DropDownListFor(model => model.RoleId,Model.RoleIds  , new { @disabled="disabled",required = "required" ,@class="form-control"}) 
+                }
+            }
+                else
+                {
+                    { Model.RoleId = 1; }
+                    @Html.HiddenFor(model => model.RoleId)
+                    @Html.DropDownListFor(model => model.RoleId,Model.RoleIds  , new { @disabled="disabled",required = "required" ,@class="form-control"})
+                }
             </div>
         </div>
         <div class="mb-3 row justify-content-center">

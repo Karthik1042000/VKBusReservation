@@ -20,5 +20,8 @@
     }
 }
 function GoCustomer() {
-    setTimeout(function () { window.location = '/Home/CustomerList'; }, 100);
+    setTimeout(function () { window.location = '/Home/Index'; }, 100);
+}
+function edit(id) {
+    setTimeout(function () { window.location = '/Home/Edit?id=' + id; }, 100);
 }

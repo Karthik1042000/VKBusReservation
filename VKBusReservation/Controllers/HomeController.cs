@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace BusReservationManagement.Controllers
 {
@@ -55,11 +56,16 @@ namespace BusReservationManagement.Controllers
             AddCustomerDTO Customer = new AddCustomerDTO();
             if (User.Identity.IsAuthenticated)
             {
-                Customer.RoleIds = customerRepository.GetAllRoles().Select(a => new SelectListItem
+                var role = User.Identity.GetClaimValue("role");
+                if (role == "Admin")
                 {
-                    Text = a.RoleName,
-                    Value = a.RoleId.ToString()
-                }).ToList();
+                    Customer.RoleIds = customerRepository.GetAllRoles().Select(a => new SelectListItem
+                    {
+                        Text = a.RoleName,
+                        Value = a.RoleId.ToString()
+                    }).ToList();
+                    Customer.RoleIds.Insert(0, new SelectListItem { Text = "Select Role", Value = "" });
+                }
             }
             else
             {
@@ -69,7 +75,7 @@ namespace BusReservationManagement.Controllers
                     Value = a.RoleId.ToString()
                 }).ToList();
             }
-            Customer.RoleIds.Insert(0, new SelectListItem { Text = "Select Role", Value = "" });
+           
             return View(Customer);
         }
 
@@ -78,7 +84,7 @@ namespace BusReservationManagement.Controllers
         {
             if (customer.CustomerId > 0)
             {
-                return Json(customerRepository.Update(customer));
+                    return Json(customerRepository.Update(customer));
             }
             else
             {
@@ -98,7 +104,8 @@ namespace BusReservationManagement.Controllers
         [HttpGet]
         public ActionResult Edit(int id)
         {
-            var customerDTO = customerRepository.GetById(id);
+            
+            Customer customerDTO = customerRepository.GetById(id);
             AddCustomerDTO customer = new AddCustomerDTO();
             customer.CustomerName = customerDTO.CustomerName;
             customer.PhoneNumber = customerDTO.PhoneNumber;
@@ -110,11 +117,13 @@ namespace BusReservationManagement.Controllers
             customer.CustomerId = customerDTO.CustomerId;
             if (User.Identity.IsAuthenticated)
             {
-                customer.RoleIds = customerRepository.GetAllRoles().Select(a => new SelectListItem
                 {
-                    Text = a.RoleName,
-                    Value = a.RoleId.ToString()
-                }).ToList();
+                    customer.RoleIds = customerRepository.GetAllRoles().Select(a => new SelectListItem
+                    {
+                        Text = a.RoleName,
+                        Value = a.RoleId.ToString()
+                    }).ToList();
+                }
             }
             else
             {
@@ -125,6 +134,7 @@ namespace BusReservationManagement.Controllers
                 }).ToList();
             }
             customer.RoleIds.Insert(0, new SelectListItem { Text = "Select Role", Value = "" });
+            
             return View("CreateCustomer", customer);
         }
 
@@ -185,13 +195,26 @@ namespace BusReservationManagement.Controllers
         [Authorize(Roles = "Admin,Customer")]
         public IActionResult BookTicket()
         {
+            var email = User.Identity.GetClaimValue("email");
+            var role = User.Identity.GetClaimValue("role");
             AddReservationDTO reservation = new AddReservationDTO();
-            reservation.CustomerList = customerRepository.GetAll().Select(a => new SelectListItem
+            if (role == "Admin")
             {
-                Text = a.CustomerName + "(" + a.CustomerId + ")",
-                Value = a.CustomerId.ToString()
-            }).ToList();
-            reservation.CustomerList.Insert(0, new SelectListItem { Text = "Select Customer", Value = "" });
+                reservation.CustomerList = customerRepository.GetAll().Select(a => new SelectListItem
+                {
+                    Text = a.CustomerName + "(" + a.CustomerId + ")",
+                    Value = a.CustomerId.ToString()
+                }).ToList();
+                reservation.CustomerList.Insert(0, new SelectListItem { Text = "Select Customer", Value = "" });
+            }
+            else
+            {
+                reservation.CustomerList = customerRepository.GetAll().Where(x=>x.EmailId==email).Select(a => new SelectListItem
+                {
+                    Text = a.CustomerName + "(" + a.CustomerId + ")",
+                    Value = a.CustomerId.ToString()
+                }).ToList();
+            }
 
             reservation.FromList = busRepository.GetAll().DistinctBy(x => x.From).Select(a => new SelectListItem
             {
@@ -300,7 +323,8 @@ namespace BusReservationManagement.Controllers
                 {
                     new Claim(ClaimTypes.NameIdentifier , user.CustomerId.ToString()),
                     new Claim(ClaimTypes.Name, user.CustomerName),
-                    new Claim(ClaimTypes.Role, user.RoleName)
+                    new Claim(ClaimTypes.Role, user.RoleName),
+                    new Claim(ClaimTypes.Email,user.EmailId)
 
                 };
                 var claimsIdentity = new ClaimsIdentity(claims, "Login");
@@ -319,12 +343,12 @@ namespace BusReservationManagement.Controllers
             await HttpContext.SignOutAsync();
             return RedirectToAction("Login", "Home");
         }
-        //public string RolesName()
-        //{
-        //    // reading a claim
-        //    var key2 = User.GetClaimValue("key2");
-        //        return key2;
-        //}
+        public string RolesName()
+        {
+            // reading a claim
+            var key = User.Identity.GetClaimValue("id");
+            return key;
+        }
     }
 }
 

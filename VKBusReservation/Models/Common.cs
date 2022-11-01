@@ -1,42 +1,40 @@
-﻿//using Microsoft.EntityFrameworkCore.Metadata.Internal;
-//using System;
-//using System.ComponentModel;
-////using Castle.Components.DictionaryAdapter;
-//using System.ComponentModel.DataAnnotations;
-//using System.Security.Claims;
-//using System.Security.Principal;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System;
+using System.ComponentModel;
+//using Castle.Components.DictionaryAdapter;
+using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
+using System.Security.Principal;
 
-//namespace VKBusReservation.Models
-//{
+namespace VKBusReservation.Models
+{
 
-//    public static class Common
-//    {
-//    public static string GetClaimValue(this IPrincipal currentPrincipal, string Role)
-//    {
-//            var identity = currentPrincipal.Identity as ClaimsIdentity;
-//            if (identity == null)
-//                return null;
+    public static class Common
+    {
+        public static string GetClaimValue(this IIdentity identity,string key)
+        {
+            ClaimsIdentity claimsIdentity = identity as ClaimsIdentity;
+            Claim role = claimsIdentity.FindFirst(ClaimTypes.Role);
+            Claim name = claimsIdentity.FindFirst(ClaimTypes.Name);
+            Claim id = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            Claim email = claimsIdentity.FindFirst(ClaimTypes.Email);
+            if(key == "name")
+            {
+                return name.Value;
+            }
+            if (key == "id")
+            {
+                return id.Value;
+            }
+            if (key == "email")
+            {
+                return email.Value;
+            }
+            else
+            {
+                return role.Value;
+            }
+        }
 
-//            var claim = identity.Claims.FirstOrDefault(c => c.Type == Role);
-//            return claim?.Value;
-//        }
-//    public string GetRole()
-//    {
-//        string role = string.Empty;
-//        if ()
-//        {
-//            var claim = (ClaimsIdentity)this.RequestContext.Principal.Identity;
-//            role = claim.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).SingleOrDefault();
-//        }
-//        return role;
-//    }
-//    public static bool IsAdmin()
-//    {
-//        if (GetRole() == "Admin")
-//        {
-//            return true;
-//        }
-//        return false;
-//    }
-//    }
-//}
+    }
+}

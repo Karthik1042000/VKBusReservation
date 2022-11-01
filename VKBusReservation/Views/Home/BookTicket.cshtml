@@ -5,6 +5,8 @@
     ViewData["Title2"] = "Edit Ticket";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var minDate = DateTime.Now.ToString("yyyy-MM-d");
+    var id = User.Identity.GetClaimValue("id");
+    var role = User.Identity.GetClaimValue("role");
 }
 <button type="button" class="btn btn-light pb-2"
         style="background-color:lightgoldenrodyellow;" onclick="GoHome()">
@@ -40,14 +42,16 @@ else
                 <label class="form-label required ">  Customer Name</label>
             </div>
                         <div class="col-5">
-                            @if (Model.ReservationId <= 0)
+                            @if (role == "Admin")
                             {
                                 @Html.DropDownListFor(model => model.CustomerId,Model.CustomerList  , new { @class="form-control"})
                             }
                             else
                             {
-                                @Html.TextBoxFor(m => m.CustomerName, new { @class="form-control",@readonly="readonly"})
-                                @Html.HiddenFor(m => m.CustomerId)
+                                {Model.CustomerId = Convert.ToInt32(id); }
+                                @Html.HiddenFor(model => model.CustomerId)
+                                @Html.DropDownListFor(model => model.CustomerId,Model.CustomerList  , new { @class="form-control",@disabled="disabled"})
+                               
                             }
                         </div>
                     </div>
