@@ -159,7 +159,7 @@ namespace VKBusReservation.Repository
         {
             var customers = (from customer in db.Customers
                              join role in db.Roles on customer.RoleId equals role.RoleId
-                             where customer.Password == password && customer.EmailId == emailId
+                             where customer.EmailId == emailId && customer.Password== password
                             select new LoginResultDTO()
                             {
                                 CustomerId = customer.CustomerId,
@@ -167,6 +167,7 @@ namespace VKBusReservation.Repository
                                 RoleName = role.RoleName,
                                 EmailId = customer.EmailId
                             }).FirstOrDefault();
+            
             return customers;
         }
     }
