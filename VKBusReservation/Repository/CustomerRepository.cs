@@ -88,6 +88,11 @@ namespace VKBusReservation.Repository
             return db.Customers.ToList();
         }
 
+        public Role RoleById(int id)
+        {
+            var roleExist = db.Roles.FirstOrDefault(x => x.RoleId == id);
+            return roleExist;
+        }
 
         public Customer GetById(int id)
         {

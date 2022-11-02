@@ -22,6 +22,6 @@
 function GoCustomer() {
     setTimeout(function () { window.location = '/Home/Index'; }, 100);
 }
-function edit(id) {
-    setTimeout(function () { window.location = '/Home/Edit?id=' + id; }, 100);
+function GoIndex() {
+    setTimeout(function () { window.location = '/Home/Index'; }, 100);
 }

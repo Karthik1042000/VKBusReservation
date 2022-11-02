@@ -19,6 +19,3 @@
     });
 });
 
-function reserveTicket() {
-    setTimeout(function () { window.location = '/Home/BookTicket'; }, 100);
-}

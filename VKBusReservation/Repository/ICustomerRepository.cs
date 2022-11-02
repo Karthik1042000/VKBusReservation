@@ -20,5 +20,6 @@ namespace VKBusReservation.Repository
         public Messages DeleteCustomer(int customerId);
         public LoginResultDTO GetLoginDetail(string emailId, string password);
         public List<Role> GetAllRoles();
+        public Role RoleById(int id);
     }
 }

@@ -17,11 +17,11 @@
 </button>
 @if (Model.ReservationId <= 0)
 {
-     <h2 class="text-danger">@ViewData["Title"]</h2>
+    <h2 class="text-danger">@ViewData["Title"]</h2>
 }
 else
 {
-   <h2 class="text-danger ">@ViewData["Title2"]</h2>
+    <h2 class="text-danger ">@ViewData["Title2"]</h2>
 }
 <style>
     .required:after {
@@ -31,16 +31,16 @@ else
 </style>
 
 <div>
-    <div style="width:100%" >
+    <div style="width:100%">
         <div style="width:40%; float:left;">
-@using (Html.BeginForm(FormMethod.Post, new { id = "Reserve" }))
-{
-    <div class="p-3 text-dark  border rounded-3 " style="background-color: #eee;">
-        @Html.HiddenFor(m => m.ReservationId )
-        <div class="mb-3  row" >
-            <div class=" col-4">
-                <label class="form-label required ">  Customer Name</label>
-            </div>
+            @using (Html.BeginForm(FormMethod.Post, new { id = "Reserve" }))
+            {
+                <div class="p-3 text-dark  border rounded-3 " style="background-color: #eee;">
+                    @Html.HiddenFor(m => m.ReservationId )
+                    <div class="mb-3  row">
+                        <div class=" col-4">
+                            <label class="form-label required ">  Customer Name</label>
+                        </div>
                         <div class="col-5">
                             @if (role == "Admin")
                             {
@@ -48,99 +48,98 @@ else
                             }
                             else
                             {
-                                {Model.CustomerId = Convert.ToInt32(id); }
+                                { Model.CustomerId = Convert.ToInt32(id); }
                                 @Html.HiddenFor(model => model.CustomerId)
                                 @Html.DropDownListFor(model => model.CustomerId,Model.CustomerList  , new { @class="form-control",@disabled="disabled"})
-                               
+
                             }
                         </div>
                     </div>
-        <div class="mb-3  row" >
-            <div class=" col-4">
-                <label class="form-label required">  From</label>
-            </div>
-            <div class="col-5">
-                @Html.DropDownListFor(model => model.From,Model.FromList, new {@onChange="getBusDetail()" , required = "required", @class="form-control"})
-                </div>
-        </div>
-        <div class="mb-3 row ">
-            <div class="col-4">
-                <label class="form-label required">To</label>
-            </div>
-            <div class="col-5">
-                @Html.DropDownListFor(model => model.To,Model.ToList  , new {@onChange="getBusDetail()", required = "required" ,@class="form-control"})
-            </div>
-        </div>
-        <div class="mb-3 row ">
-            <div class="col-4">
-                <label class="form-label required">Date</label>
-            </div>
-            <div class="col-5">
+                    <div class="mb-3  row">
+                        <div class=" col-4">
+                            <label class="form-label required">  From</label>
+                        </div>
+                        <div class="col-5">
+                            @Html.DropDownListFor(model => model.From,Model.FromList, new {@onChange="getBusDetail()" , required = "required", @class="form-control"})
+                        </div>
+                    </div>
+                    <div class="mb-3 row ">
+                        <div class="col-4">
+                            <label class="form-label required">To</label>
+                        </div>
+                        <div class="col-5">
+                            @Html.DropDownListFor(model => model.To,Model.ToList  , new {@onChange="getBusDetail()", required = "required" ,@class="form-control"})
+                        </div>
+                    </div>
+                    <div class="mb-3 row ">
+                        <div class="col-4">
+                            <label class="form-label required">Date</label>
+                        </div>
+                        <div class="col-5">
                             @Html.TextBoxFor(m => m.Reservationdate , new {@onChange="getReservation()",@class="form-control", required = "required" ,type="date",min=@minDate})
-            </div>
-        </div>
-        <div class="mb-3  row ">
-            <div class="col-4">
-                <label class="form-label">Bus Number</label>
-            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3  row ">
+                        <div class="col-4">
+                            <label class="form-label">Bus Number</label>
+                        </div>
                         <div class="col-5">
                             @Html.TextBoxFor(m => m.BusNumber, new { @class="form-control",@readonly="readonly",id="busNumber"})
-            </div>
-        </div>
-        <div class="mb-3  row ">
-            <div class="col-4">
-                <label class="form-label">Available Seats</label>
-            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3  row ">
+                        <div class="col-4">
+                            <label class="form-label">Available Seats</label>
+                        </div>
                         <div class="col-5 ">
                             @Html.TextBoxFor(m => m.AvailableSeats, new { @class="form-control",@readonly="readonly",id="availableSeats"})
-            </div>
-        </div>
-        <div class="mb-3  row ">
-            <div class="col-4">
-                <label class="form-label">Reserved Seats</label>
-            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3  row ">
+                        <div class="col-4">
+                            <label class="form-label">Reserved Seats</label>
+                        </div>
                         <div class="col-5">
-               @* <label class="form-label" id="reservedSeat"></label>*@
+                            @* <label class="form-label" id="reservedSeat"></label>*@
                             @Html.TextBoxFor(m => m.ReservedSeats, new { @class="form-control",@readonly="readonly",id="reservedSeats"})
-            </div>
-        </div>
-        <div class="mb-3  row ">
-            <div class="col-4">
-                <label class="form-label required">Number Of BookingSeats</label>
-            </div>
-            <div class="col-5">
-                @Html.TextBoxFor(m => m.NumberOfSeats , new {@class="form-control", required = "required" ,type ="number",min = "1" ,max = "50"})
-            </div>
-        </div>
-        <div class="mb-3 row justify-content-center">
-            <div class="col-4">
-                <button type="submit" class="btn btn-outline-primary">Submit</button>
-                
-            </div>
-        </div>
-        @Html.HiddenFor(m => m.NumberOfSeats ,new{@class="form-control" ,id="totalNumberOfSeat"} )
-        @Html.HiddenFor(m => m.BusId ,new{@class="form-control" ,id="busId"} )
-    </div>
-}
+                        </div>
+                    </div>
+                    <div class="mb-3  row ">
+                        <div class="col-4">
+                            <label class="form-label required">Number Of BookingSeats</label>
+                        </div>
+                        <div class="col-5">
+                            @Html.TextBoxFor(m => m.NumberOfSeats , new {@class="form-control", required = "required" ,type ="number",min = "1" ,max = "50"})
+                        </div>
+                    </div>
+                    <div class="mb-3 row justify-content-center">
+                        <div class="col-4">
+                            <button type="submit" class="btn btn-outline-primary">Submit</button>
+
+                        </div>
+                    </div>
+                    @Html.HiddenFor(m => m.NumberOfSeats ,new{@class="form-control" ,id="totalNumberOfSeat"} )
+                    @Html.HiddenFor(m => m.BusId ,new{@class="form-control" ,id="busId"} )
+                </div>
+            }
         </div>
         <div class="container-fluid" style="width:60%; float:right;">
-<table id="busList" class="table table-hover borderd " style="display:none">
+            <table id="busList" class="table table-hover borderd " style="display:none">
                 <thead style="background-color:#ddd;">
-    <tr>
-            <th class="text-center">Bus Id</th>
-            <th class="text-center">Bus Name</th>
-            <th class="text-center">Bus Number</th>
-            <th class="text-center">Ticket Price</th>
-            <th class="text-center">Total Seats</th>
-            <th class="text-center">Trip Start Time</th>
-            <th>Trip End Time</th>
-            <th>Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    
-  </tbody>
-  </table>
+                    <tr>
+                        <th class="text-center">Bus Id</th>
+                        <th class="text-center">Bus Name</th>
+                        <th class="text-center">Bus Number</th>
+                        <th class="text-center">Ticket Price</th>
+                        <th class="text-center">Total Seats</th>
+                        <th class="text-center">Trip Start Time</th>
+                        <th>Trip End Time</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
 
         </div>
     </div>

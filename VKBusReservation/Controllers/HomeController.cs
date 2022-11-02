@@ -33,15 +33,37 @@ namespace BusReservationManagement.Controllers
             customerRepository = _customerRepository;
             busRepository = _busRepository;
         }
+       
+        
         [Authorize(Roles = "Admin,Customer")]
         public IActionResult Index()
         {
             return View();
         }
+
+
         [Authorize(Roles = "Customer")]
         public IActionResult CustomerIndex()
         {
             return View();
+        }
+
+
+        [Authorize]
+        public IActionResult Profile(int id)
+        {
+            Customer customer = customerRepository.GetById(id);
+            Role role= customerRepository.RoleById(customer.RoleId);
+            AddCustomerDTO customerDTO = new AddCustomerDTO();
+            customerDTO.CustomerName = customer.CustomerName;
+            customerDTO.PhoneNumber = customer.PhoneNumber;
+            customerDTO.City = customer.City;
+            customerDTO.EmailId = customer.EmailId;
+            customerDTO.Password = customer.Password;
+            customerDTO.RoleName = role.RoleName;
+            customerDTO.Pincode = customer.Pincode;
+            customerDTO.CustomerId = customer.CustomerId;
+            return View(customerDTO);
         }
 
         [Authorize(Roles = "Admin")]
@@ -50,6 +72,7 @@ namespace BusReservationManagement.Controllers
             var customers = customerRepository.GetAll();
             return View(customers);
         }
+
 
         public IActionResult CreateCustomer()
         {
@@ -79,6 +102,7 @@ namespace BusReservationManagement.Controllers
             return View(Customer);
         }
 
+
         [HttpPost]
         public ActionResult Save(AddCustomerDTO customer)
         {
@@ -93,12 +117,14 @@ namespace BusReservationManagement.Controllers
             }
         }
 
+
         [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
         {
             var customer = customerRepository.DeleteCustomer(id);
             return Json(customer);
         }
+
 
         [Authorize(Roles = "Admin,Customer")]
         [HttpGet]
@@ -138,17 +164,22 @@ namespace BusReservationManagement.Controllers
             return View("CreateCustomer", customer);
         }
 
+
         [Authorize(Roles = "Admin")]
         public IActionResult AllBuses()
         {
             var busList = busRepository.GetAll();
             return View(busList);
         }
+
+
         [Authorize(Roles = "Admin")]
         public IActionResult CreateBus()
         {
             return View();
         }
+
+
         [Authorize(Roles = "Admin")]
         [HttpPost]
         public ActionResult SaveBus(Bus bus)
@@ -162,12 +193,15 @@ namespace BusReservationManagement.Controllers
                 return Json(busRepository.CreateBus(bus));
             }
         }
+
+
         [Authorize(Roles = "Admin")]
         public IActionResult DeleteBus(int id)
         {
             var bus = busRepository.DeleteBus(id);
             return Json(bus);
         }
+
 
         [Authorize(Roles = "Admin")]
         [HttpGet]
@@ -177,12 +211,15 @@ namespace BusReservationManagement.Controllers
             return View("CreateBus", bus);
         }
 
+
         [Authorize(Roles = "Admin")]
         public IActionResult ReservationList()
         {
             var reservations = reservationRepository.ReserveList();
             return View(reservations);
         }
+
+
         [Authorize(Roles = "Admin,Customer")]
         public IActionResult CustomerDetails(int id)
         {
@@ -192,6 +229,8 @@ namespace BusReservationManagement.Controllers
             customers.Customers = reservationRepository.ReservationDetailsByCustomerId(id).ToList();
             return View(customers);
         }
+
+
         [Authorize(Roles = "Admin,Customer")]
         public IActionResult BookTicket()
         {
@@ -231,12 +270,16 @@ namespace BusReservationManagement.Controllers
             reservation.ToList.Insert(0, new SelectListItem { Text = "Select Destination", Value = "" });
             return View(reservation);
         }
+
+
         [Authorize(Roles = "Admin,Customer")]
         public ActionResult GetBus(string from, string to)
         {
             var bus = busRepository.GetByFromTo(from, to);
             return Json(bus);
         }
+
+
         [Authorize(Roles = "Admin,Customer")]
         [HttpPost]
         public ActionResult GetReservation(int id, DateTime date)
@@ -245,6 +288,8 @@ namespace BusReservationManagement.Controllers
             var last = bus.LastOrDefault(x => x.Reservationdate == date);
             return Json(last);
         }
+
+
         [Authorize(Roles = "Admin,Customer")]
         [HttpPost]
         public ActionResult SaveTicket(AddReservationDTO addReservation)
@@ -258,12 +303,16 @@ namespace BusReservationManagement.Controllers
                 return Json(reservationRepository.BookTicket(addReservation));
             }
         }
+
+
         [Authorize(Roles = "Admin,Customer")]
         public IActionResult CancelTicket(int id)
         {
             var ticket = reservationRepository.CancelTicket(id);
             return Json(ticket);
         }
+
+
 
         [Authorize(Roles = "Admin,Customer")]
         [HttpGet]
@@ -282,7 +331,7 @@ namespace BusReservationManagement.Controllers
             reservation.ReservationId = detail.ReservationId;
             reservation.AvailableSeats = detail.AvailableSeats;
             reservation.NumberOfSeats = detail.NumberOfSeats;
-            reservation.Reservationdate = detail.Reservationdate.ToString("yyyy-MM-d");
+            reservation.Reservationdate =detail.Reservationdate.ToString("yyyy-MM-dd");
             reservation.ReservedSeats = detail.ReservedSeats;
             reservation.CustomerList = customerRepository.GetAll().Select(a => new SelectListItem
             {
@@ -307,12 +356,16 @@ namespace BusReservationManagement.Controllers
 
             return View("BookTicket", reservation);
         }
+
+
+        [AllowAnonymous]
         public IActionResult Login()
         {
             return View();
         }
 
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Login(LoginDTO login)
         {
@@ -338,17 +391,14 @@ namespace BusReservationManagement.Controllers
             return View(login);
         }
 
+
+        [Authorize]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
             return RedirectToAction("Login", "Home");
         }
-        public string RolesName()
-        {
-            // reading a claim
-            var key = User.Identity.GetClaimValue("id");
-            return key;
-        }
+      
     }
 }
 
