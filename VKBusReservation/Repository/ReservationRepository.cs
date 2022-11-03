@@ -27,6 +27,7 @@ namespace VKBusReservation.Repository
             reservation.ReservationTime = DateTime.Now;
             reservation.ReservedSeats = addReservation.ReservedSeats;
             Messages messages = new Messages();
+            messages.Role=addReservation.Role;
             messages.Success = false;
             var busExist = GetBus(reservation.BusId);
             if (busExist == null)
@@ -62,7 +63,7 @@ namespace VKBusReservation.Repository
                         messages.Message = "Reserved seat is greater than the Bus Total seats";
                         return messages;
                     }
-                    return SaveReservation(reservation, reservation.NumberOfSeats, availableSeats);
+                    return SaveReservation(reservation, reservation.NumberOfSeats, availableSeats, addReservation.Role);
                 }
                 if (timeExist != null)
                 {
@@ -73,7 +74,7 @@ namespace VKBusReservation.Repository
                         messages.Message = "Reserved seat is greater than the Bus Total seats";
                         return messages;
                     }
-                    return SaveReservation(reservation, (timeExist.ReservedSeats + reservation.NumberOfSeats), newAvailableSeat);
+                    return SaveReservation(reservation, (timeExist.ReservedSeats + reservation.NumberOfSeats), newAvailableSeat, addReservation.Role);
                 }
 
             }
@@ -93,7 +94,7 @@ namespace VKBusReservation.Repository
                     messages.Message = "Reserved seat is greater than the Bus Total seats";
                     return messages;
                 }
-                return SaveReservation(reservation, reservation.NumberOfSeats, availableSeats);
+                return SaveReservation(reservation, reservation.NumberOfSeats, availableSeats, addReservation.Role);
             }
             if (newTimeExist != null)
             {
@@ -104,7 +105,7 @@ namespace VKBusReservation.Repository
                     messages.Message = "Reserved seat is greater than the Bus Total seats";
                     return messages;
                 }
-                return SaveReservation(reservation, (newTimeExist.ReservedSeats + reservation.NumberOfSeats), newAvailableSeat);
+                return SaveReservation(reservation, (newTimeExist.ReservedSeats + reservation.NumberOfSeats), newAvailableSeat, addReservation.Role);
             }
             return messages;
         }
@@ -158,6 +159,7 @@ namespace VKBusReservation.Repository
             reservation.ReservationTime = DateTime.Now;
             reservation.ReservedSeats = addReservation.ReservedSeats;
             Messages messages = new Messages();
+            messages.Role=addReservation.Role;
             messages.Success = false;
             var exist = ReservationDetailsById(reservation.ReservationId);
             if (exist == null)
@@ -298,7 +300,7 @@ namespace VKBusReservation.Repository
             return existReservation;
         }
 
-        private Messages SaveReservation(Reservation reservation, int? reservedSeats, int? availableSeats)
+        private Messages SaveReservation(Reservation reservation, int? reservedSeats, int? availableSeats,bool id)
         {
             Messages messages = new Messages();
             reservation.ReservedSeats = reservedSeats;
@@ -307,6 +309,7 @@ namespace VKBusReservation.Repository
             db.SaveChanges();
             messages.Success = true;
             messages.Message = "Ticket successfully reserved";
+            messages.Role = id;
             return messages;
         }
         #endregion

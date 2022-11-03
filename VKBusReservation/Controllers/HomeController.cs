@@ -79,7 +79,7 @@ namespace BusReservationManagement.Controllers
             AddCustomerDTO Customer = new AddCustomerDTO();
             if (User.Identity.IsAuthenticated)
             {
-                var role = User.Identity.GetClaimValue("role");
+                var role = User.Identity.GetClaimRole();
                 if (role == "Admin")
                 {
                     Customer.RoleIds = customerRepository.GetAllRoles().Select(a => new SelectListItem
@@ -234,8 +234,8 @@ namespace BusReservationManagement.Controllers
         [Authorize(Roles = "Admin,Customer")]
         public IActionResult BookTicket()
         {
-            var email = User.Identity.GetClaimValue("email");
-            var role = User.Identity.GetClaimValue("role");
+            var email = User.Identity.GetClaimEmail();
+            var role = User.Identity.GetClaimRole();
             AddReservationDTO reservation = new AddReservationDTO();
             if (role == "Admin")
             {
@@ -245,6 +245,7 @@ namespace BusReservationManagement.Controllers
                     Value = a.CustomerId.ToString()
                 }).ToList();
                 reservation.CustomerList.Insert(0, new SelectListItem { Text = "Select Customer", Value = "" });
+                reservation.Role = true;
             }
             else
             {
@@ -253,6 +254,7 @@ namespace BusReservationManagement.Controllers
                     Text = a.CustomerName + "(" + a.CustomerId + ")",
                     Value = a.CustomerId.ToString()
                 }).ToList();
+                reservation.Role = false;
             }
 
             reservation.FromList = busRepository.GetAll().DistinctBy(x => x.From).Select(a => new SelectListItem
@@ -322,6 +324,15 @@ namespace BusReservationManagement.Controllers
             var customer = customerRepository.GetById(detail.CustomerId);
             var bus = busRepository.GetByBusId(detail.BusId);
             AddReservationDTO reservation = new AddReservationDTO();
+            var role = User.Identity.GetClaimRole();
+            if (role == "Admin")
+            {
+                reservation.Role = true;
+            }
+            else
+            {
+                reservation.Role = false;
+            }
             reservation.CustomerId = detail.CustomerId;
             reservation.CustomerName = customer.CustomerName;
             reservation.BusId = detail.BusId;

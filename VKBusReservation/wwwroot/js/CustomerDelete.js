@@ -20,8 +20,5 @@
     }
 }
 function GoCustomer() {
-    setTimeout(function () { window.location = '/Home/Index'; }, 100);
-}
-function GoIndex() {
-    setTimeout(function () { window.location = '/Home/Index'; }, 100);
+    setTimeout(function () { window.location = '/Home/CustomerList'; }, 100);
 }

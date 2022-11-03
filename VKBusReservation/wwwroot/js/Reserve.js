@@ -6,10 +6,16 @@
                 url: "/Home/SaveTicket",
                 type: "Post",
                 data: $("#Reserve").serialize(),
+                
                 success: function (response) {
                     alert(response.message);
                     if (response.success == true) {
-                        setTimeout(function () { window.location = '/Home/Index'; }, 500);
+                        if (response.role == true) {
+                            setTimeout(function () { window.location = '/Home/ReservationList'; }, 500);
+                        }
+                        else {
+                            setTimeout(function () { window.location = '/Home/Index'; }, 500);
+                        }
                     }
                 },
                 error: function () {

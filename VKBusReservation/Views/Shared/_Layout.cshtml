@@ -20,9 +20,9 @@
                 @if (User.Identity.IsAuthenticated)
                 {
                     var claim = User.Claims;
-                    string role = claim.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).SingleOrDefault();
-                    string id = claim.Where(c => c.Type == ClaimTypes.NameIdentifier).Select(c => c.Value).SingleOrDefault();
-                    string name = claim.Where(c => c.Type == ClaimTypes.Name).Select(c => c.Value).SingleOrDefault();
+                    string role = User.Identity.GetClaimRole();
+                    string id = User.Identity.GetClaimId();
+                    string name = User.Identity.GetClaimName();
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
@@ -118,8 +118,8 @@
     <script src="~/js/customerdelete.js"></script>
     <script src="~/js/customerform.js"></script>
     <script src="~/js/reservationdelete.js"></script>
-    <script src="~/js/reservationform.js"></script>
     <script src="~/js/reserve.js"></script>
+    <script src="~/js/goindex.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

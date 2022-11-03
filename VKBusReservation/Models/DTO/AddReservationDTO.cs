@@ -26,6 +26,7 @@ namespace VKBusReservation.Models.DTO
         public List<SelectListItem> CustomerList { get; set; }
         public string CustomerName { get; set; } 
         public string BusNumber { get; set; }
+        public bool Role { get; set; }
     }
 
 }
