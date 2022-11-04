@@ -21,6 +21,7 @@ namespace VKBusReservation.Models.DTO
 
         public int RoleId { get; set; }
         public List<SelectListItem> RoleIds { get; set; }
-        public string RoleName { get; set; } 
+        public string RoleName { get; set; }
+        public bool Role { get; set; }
     }
 }

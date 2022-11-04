@@ -39,6 +39,7 @@
 {
     <div class="container border rounded-3  pt-3  bg-light text-dark w-50">
         @Html.HiddenFor(m => m.CustomerId )
+        @Html.HiddenFor(m => m.Role )
         <div class="mb-3  row justify-content-center">
             <div class="col-3">
                 <label class="form-label required"> Name</label>
@@ -124,7 +125,9 @@
 
 }
 
-
+@section scripts{
+    <script src="~/js/goindex.js"></script>
+}
 
 
 

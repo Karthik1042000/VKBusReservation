@@ -27,6 +27,7 @@ namespace VKBusReservation.Repository
             customer.Pincode=customerDTO.Pincode;
             customer.CustomerId=customerDTO.CustomerId;
             Messages messages = new Messages();
+            messages.Role=customerDTO.Role;
             messages.Success = false;
             var customerExist = GetByPhoneNumber(customer.PhoneNumber);
             var emailIdExist = GetByEmailId(customer.EmailId);
@@ -126,6 +127,7 @@ namespace VKBusReservation.Repository
             customer.Pincode = customerDTO.Pincode;
             customer.CustomerId = customerDTO.CustomerId;
             Messages messages = new Messages();
+            messages.Role = customerDTO.Role;
             messages.Success = false;
             var customerExist = GetById(customer.CustomerId);
             var phoneExist = GetByPhoneNumber(customer.PhoneNumber);
